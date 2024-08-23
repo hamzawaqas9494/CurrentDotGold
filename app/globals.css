@@ -1,0 +1,176 @@
+@tailwind base;
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  outline: 0;
+}
+body {
+  font-size: 1rem;
+}
+main {
+  min-height: calc(100vh - 80px - 116px);
+}
+/* nprogress */
+#nprogress .bar {
+  background: red !important;
+}
+#nprogress .bar {
+  background: linear-gradient(to right, #b96a00, #af8901, #e1bc00) !important;
+}
+.progress-bar {
+  height: 20px;
+  width: 100%;
+  background-color: blue;
+  border-radius: 10px;
+  position: relative;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background-color: green;
+  border-radius: 10px;
+  width: 10%;
+}
+.fill-now {
+  animation: load 3s normal forwards;
+}
+@keyframes load {
+  0% {
+    width: 10%;
+  }
+  100% {
+    width: 68%;
+  }
+}
+/* navigation */
+.nav-item button:after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 4px;
+  transform: scaleX(0);
+  transition: transform 250ms ease-in-out;
+  background: linear-gradient(to right, #b96a00, #af8901, #e1bc00);
+}
+
+.nav-item button:hover:after {
+  transform: scaleX(1);
+}
+.nav-item.active button:after {
+  transform: scaleX(1);
+}
+
+.nav-item button.fromRight:after {
+  transform-origin: 100% 50%;
+}
+
+.nav-item button.fromLeft:after {
+  transform-origin: 0% 50%;
+}
+/* slider styling */
+.carousel-root {
+  width: 100% !important;
+  margin: auto !important;
+  margin-top: 3% !important;
+}
+.carousel .slide img {
+  width: 139px !important;
+  border-radius: 50%;
+}
+.carousel .control-dots {
+  display: none;
+}
+.carousel.carousel-slider .control-arrow {
+  background: white !important;
+  height: 50px !important;
+  width: 50px !important;
+  position: absolute;
+  top: 35% !important;
+  border-radius: 100%;
+  opacity: 1 !important;
+  box-shadow: 0px 3px 6px #00000029;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.carousel .control-arrow:before,
+.carousel.carousel-slider .control-arrow:before {
+  margin: 0 10px !important;
+  display: inline-block;
+  border-top: 0px solid transparent !important;
+  border-bottom: 0px solid transparent !important;
+}
+.carousel .control-next.control-arrow:before {
+  border-left: 0px solid #fff !important;
+  content: ">" !important;
+  color: #b57500;
+  font-weight: bold;
+  position: relative;
+  top: -2px;
+}
+.carousel .control-prev.control-arrow:before {
+  border-right: 0px solid #fff !important;
+  content: "<" !important;
+  color: #b57500;
+  font-weight: bold;
+  position: relative;
+  top: -2px;
+}
+.carousel .control-prev.control-arrow {
+  left: 60px !important;
+}
+.carousel .control-next.control-arrow {
+  right: 60px !important;
+}
+@media (max-width: 1024px) {
+  .carousel .control-prev.control-arrow {
+    left: 0px !important;
+  }
+  .carousel .control-next.control-arrow {
+    right: 0px !important;
+  }
+  .myCarousel {
+    width: 80% !important;
+    margin-top: 100px;
+  }
+  .profile {
+    position: absolute;
+    top: 0px;
+  }
+  .text br {
+    display: none;
+  }
+}
+@media (max-width: 640px) {
+  .carousel.carousel-slider .control-arrow {
+    display: none !important;
+  }
+  .myCarousel {
+    width: 100% !important;
+  }
+  .carousel .slider-wrapper.axis-horizontal .slider {
+    height: 450px;
+  }
+}
+.input-style{
+  border: 2px solid red;
+  padding: 6px;
+}
+.content-box {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+/* quil editor css */
+.ql-editor {
+  min-height: 300px;
+}
+@tailwind components;
+@tailwind utilities;
+
+#__next {
+  min-height: 100%;
+}
