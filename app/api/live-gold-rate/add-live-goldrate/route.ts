@@ -707,8 +707,8 @@ async function fetchAndStoreRates() {
         INSERT INTO rates (gold_rate, silver_rate, date)
         VALUES (${goldRate}, ${silverRate}, NOW());
       `;
-    console.log("Fetched Rates:", { goldRate, silverRate });
-    console.log("Rates inserted successfully.");
+    // console.log("Fetched Rates hamza:", { goldRate, silverRate });
+    // console.log("Rates inserted successfully.");
   } catch (error) {
     console.error("Error processing data:", error);
     throw new Error("Error processing rates");
