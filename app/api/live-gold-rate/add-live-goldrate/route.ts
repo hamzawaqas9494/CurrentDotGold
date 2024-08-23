@@ -710,11 +710,11 @@ async function fetchAndStoreRates() {
     console.log("Fetched Rates hamza:", { goldRate, silverRate });
     // console.log("Rates inserted successfully.");
   } catch (error) {
-    // console.error("Error processing data:", error);
+    console.error("Error processing data:", error);
     throw new Error("Error processing rates");
   }
 }
-setInterval(fetchAndStoreRates, 120000);
+setInterval(fetchAndStoreRates, 60000);
 export async function GET() {
   try {
     await fetchAndStoreRates();
