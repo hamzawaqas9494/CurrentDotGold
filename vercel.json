@@ -1,4 +1,7 @@
 {
-  "path": "/api/every-day",
-  "schedule": "0 0 * * *"
+  "functions": {
+    "app/api/live-gold-rate": {
+      "maxDuration": 30
+    }
+  }
 }
