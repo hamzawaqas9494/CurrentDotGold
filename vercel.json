@@ -1,8 +1,8 @@
 {
   "functions": {
-    "api/live-gold-rate/add-live-goldrate/route.ts": {
-      "maxDuration": 10,
-      "schedule": "*/5 * * * *"
+    "api/live-gold-rate/add-live-goldrate": {
+      "maxDuration": 10
+      
     }
   }
 }
