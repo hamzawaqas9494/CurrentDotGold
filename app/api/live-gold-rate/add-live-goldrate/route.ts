@@ -694,7 +694,7 @@ async function fetchAndStoreRates() {
   try {
     // Fetch the latest rates from the API
     const response = await fetch(`${apiBaseUrl}`);
-    console.log();
+
     if (!response.ok) {
       throw new Error("Failed to fetch rates from the API");
     }
@@ -703,35 +703,18 @@ async function fetchAndStoreRates() {
     const goldRate = parseFloat(data.rates.PKRXAU || "0");
     const silverRate = parseFloat(data.rates.XAG || "0");
 
-    // // Fetch the most recent rates from the database
-    // const lastRate = await sql`
-    //   SELECT gold_rate, silver_rate
-    //   FROM rates
-    //   ORDER BY date DESC
-    //   LIMIT 1;
-    // `;
-
-    // const lastGoldRate = lastRate.rows[0]?.gold_rate || 0;
-    // const lastSilverRate = lastRate.rows[0]?.silver_rate || 0;
-
-    // Compare fetched rates with the last stored rates
-    // if (goldRate !== lastGoldRate || silverRate !== lastSilverRate) {
-    // Insert the new rates only if there is a change
     await sql`
         INSERT INTO rates (gold_rate, silver_rate, date)
         VALUES (${goldRate}, ${silverRate}, NOW());
       `;
     console.log("Fetched Rates:", { goldRate, silverRate });
     console.log("Rates inserted successfully.");
-    // } else {
-    //   console.log("Rates have not changed. No insertion needed.");
-    // }
   } catch (error) {
     console.error("Error processing data:", error);
     throw new Error("Error processing rates");
   }
 }
-setInterval(fetchAndStoreRates, 120000);
+// setInterval(fetchAndStoreRates, 120000);
 export async function GET() {
   try {
     await fetchAndStoreRates();
