@@ -1,8 +1,7 @@
 {
   "crons": [
     {
-      "path": "/app/api/live-gold-rate/add-live-goldrate/route.ts",
-      "schedule": "5 * * * *"
+      "path": "/app/api/live-gold-rate/add-live-goldrate/route.ts"
     }
   ]
 }
