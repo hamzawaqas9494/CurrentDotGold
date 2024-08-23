@@ -355,77 +355,77 @@
 // // }
 
 
-// import { apiBaseUrl } from "@/context/constants";
-// import { sql } from "@vercel/postgres";
-// import { NextRequest, NextResponse } from "next/server";
+import { apiBaseUrl } from "@/context/constants";
+import { sql } from "@vercel/postgres";
+import { NextRequest, NextResponse } from "next/server";
 
 
 
-// // Function to fetch the latest rates from the database
-// async function getLatestStoredRates() {
-//   const result = await sql`
-//     SELECT gold_rate, silver_rate, custom_rate, date 
-//     FROM rates 
-//     ORDER BY date DESC 
-//     LIMIT 1
-//   `;
-//   return result?.rows?.[0];
-// }
+// Function to fetch the latest rates from the database
+async function getLatestStoredRates() {
+  const result = await sql`
+    SELECT gold_rate, silver_rate, custom_rate, date 
+    FROM rates 
+    ORDER BY date DESC 
+    LIMIT 1
+  `;
+  return result?.rows?.[0];
+}
 
-// // Function to fetch rates from the API and store them in the database if they have changed
-// async function fetchAndStoreRates() {
-//   try {
-//     // Get the latest stored rates from the database
-//     const latestRates = await getLatestStoredRates();
+// Function to fetch rates from the API and store them in the database if they have changed
+async function fetchAndStoreRates() {
+  try {
+    // Get the latest stored rates from the database
+    const latestRates = await getLatestStoredRates();
 
-//     // Fetch data from the external API
-//     const response = await fetch(`${apiBaseUrl}`);
-//     if (!response.ok) {
-//       throw new Error("Failed to fetch rates from the API");
-//     }
-//     const data = await response.json();
+    // Fetch data from the external API
+    const response = await fetch(`${apiBaseUrl}`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch rates from the API");
+    }
+    const data = await response.json();
 
-//     // Extract rates from the API response
-//     const goldRate = parseFloat(data.rates.PKRXAU || "0");
-//     const silverRate = parseFloat(data.rates.XAG || "0");
-//     const customRate = parseFloat("0");
+    // Extract rates from the API response
+    const goldRate = parseFloat(data.rates.PKRXAU || "0");
+    const silverRate = parseFloat(data.rates.XAG || "0");
+    const customRate = parseFloat("0");
 
-//     // Check if the fetched rates differ from the latest stored rates
-//     const ratesChanged =
-//       !latestRates ||
-//       latestRates.gold_rate !== goldRate ||
-//       latestRates.silver_rate !== silverRate ||
-//       latestRates.custom_rate !== customRate;
+    // Check if the fetched rates differ from the latest stored rates
+    const ratesChanged =
+      !latestRates ||
+      latestRates.gold_rate !== goldRate ||
+      latestRates.silver_rate !== silverRate ||
+      latestRates.custom_rate !== customRate;
 
-//     if (ratesChanged) {
-//       // Insert the new rates into the database if they have changed
-//       await sql`
-//         INSERT INTO rates (gold_rate, silver_rate, custom_rate, date)
-//         VALUES (${goldRate}, ${silverRate}, ${customRate}, NOW());
-//       `;
-//       console.log("Rates inserted successfully.");
-//     } else {
-//       console.log("Rates have not changed. No insertion needed.");
-//     }
-//   } catch (error) {
-//     console.error("Error inserting data:", error);
-//   }
-// }
+    if (ratesChanged) {
+      // Insert the new rates into the database if they have changed
+      await sql`
+        INSERT INTO rates (gold_rate, silver_rate, custom_rate, date)
+        VALUES (${goldRate}, ${silverRate}, ${customRate}, NOW());
+      `;
+      console.log("Rates inserted successfully.");
+    } else {
+      console.log("Rates have not changed. No insertion needed.");
+    }
+  } catch (error) {
+    console.error("Error inserting data:", error);
+  }
+}
 
-// // Handle GET requests
-// export async function GET() {
-//   try {
-//     await fetchAndStoreRates();
+// Handle GET requests
+export async function GET() {
+  try {
+    await fetchAndStoreRates();
 
-//     return NextResponse.json(
-//       { message: "Rates processed successfully." },
-//       { status: 200 }
-//     );
-//   } catch (error: any) {
-//     console.error("Error processing request:", error);
-//     return NextResponse.json(
-//       { error: `Failed to process request: ${error.message}` },
-//       { status: 500 }
-//     );
-//   }
-// }
+    return NextResponse.json(
+      { message: "Rates processed successfully." },
+      { status: 200 }
+    );
+  } catch (error: any) {
+    console.error("Error processing request:", error);
+    return NextResponse.json(
+      { error: `Failed to process request: ${error.message}` },
+      { status: 500 }
+    );
+  }
+}
