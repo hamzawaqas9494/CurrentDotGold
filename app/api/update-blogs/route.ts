@@ -60,11 +60,11 @@ import path from "path";
 import fs from "fs";
 import { sql } from "@vercel/postgres";
 
-export const config = {
-  api: {
-    bodyParser: false, // Disallow body parsing, we're handling it manually
-  },
-};
+// export const config = {
+//   api: {
+//     bodyParser: false, // Disallow body parsing, we're handling it manually
+//   },
+// };
 
 export async function PUT(request: NextRequest) {
   const formData = await request.formData();
