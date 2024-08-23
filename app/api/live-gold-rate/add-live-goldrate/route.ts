@@ -694,6 +694,7 @@ async function fetchAndStoreRates() {
   try {
     // Fetch the latest rates from the API
     const response = await fetch(`${apiBaseUrl}`);
+
     if (!response.ok) {
       throw new Error("Failed to fetch rates from the API");
     }
@@ -707,13 +708,13 @@ async function fetchAndStoreRates() {
         VALUES (${goldRate}, ${silverRate}, NOW());
       `;
     console.log("Fetched Rates hamza:", { goldRate, silverRate });
-    console.log("Rates inserted successfully.");
+    // console.log("Rates inserted successfully.");
   } catch (error) {
     console.error("Error processing data:", error);
     throw new Error("Error processing rates");
   }
 }
-setInterval(fetchAndStoreRates, 2 * 60 * 1000);
+setInterval(fetchAndStoreRates, 60000);
 export async function GET() {
   try {
     await fetchAndStoreRates();
