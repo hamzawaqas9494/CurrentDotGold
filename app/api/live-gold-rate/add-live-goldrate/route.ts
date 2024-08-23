@@ -707,20 +707,20 @@ async function fetchAndStoreRates() {
         INSERT INTO rates (gold_rate, silver_rate, date)
         VALUES (${goldRate}, ${silverRate}, NOW());
       `;
-    // console.log("Fetched Rates hamza:", { goldRate, silverRate });
+    console.log("Fetched Rates hamza:", { goldRate, silverRate });
     // console.log("Rates inserted successfully.");
   } catch (error) {
     // console.error("Error processing data:", error);
     throw new Error("Error processing rates");
   }
 }
-// setInterval(fetchAndStoreRates, 120000);
+setInterval(fetchAndStoreRates, 120000);
 export async function GET() {
   try {
     await fetchAndStoreRates();
 
     return NextResponse.json(
-      // { message: "Rates processed successfully." },
+      { message: "Rates processed successfully." },
       { status: 200 }
     );
   } catch (error: any) {
