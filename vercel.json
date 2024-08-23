@@ -1,7 +1,1 @@
-{
-  "functions": {
-    "app/api/live-gold-rate/add-live-goldrate": {
-      "maxDuration": 30
-    }
-  }
-}
+
