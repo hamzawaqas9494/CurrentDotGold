@@ -1,7 +1,0 @@
-{
-  "crons": [
-    {
-      "path": "/app/contact"
-    }
-  ]
-}
