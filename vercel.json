@@ -1,3 +1,7 @@
 {
-  "crons": [{}]
+  "functions": {
+    "api/live-gold-rate/add-live-goldrate": {
+      "cron": "5 * * * *"
+    }
+  }
 }
