@@ -714,7 +714,7 @@ async function fetchAndStoreRates() {
     throw new Error("Error processing rates");
   }
 }
-setInterval(fetchAndStoreRates, 60000);
+// setInterval(fetchAndStoreRates, 60000);
 export async function GET() {
   try {
     await fetchAndStoreRates();
