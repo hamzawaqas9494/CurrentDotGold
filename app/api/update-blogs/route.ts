@@ -66,7 +66,7 @@ import { sql } from "@vercel/postgres";
   },
 };
 
-export default async function PUT(request: NextRequest) {
+async function PUT(request: NextRequest) {
   const formData = await request.formData();
 
   const id = formData.get("id") as string;
