@@ -1,7 +1,12 @@
 {
   "functions": {
-    "app/api/live-gold-rate/add-live-goldrate/route.ts": {
-      "schedule": "*/5 * * * *"
+    "api/test.js": {
+      "memory": 3009,
+      "maxDuration": 30
+    },
+    "api/*.js": {
+      "memory": 3009,
+      "maxDuration": 30
     }
   }
 }

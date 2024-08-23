@@ -710,7 +710,7 @@ async function fetchAndStoreRates() {
     // console.log("Fetched Rates hamza:", { goldRate, silverRate });
     // console.log("Rates inserted successfully.");
   } catch (error) {
-    console.error("Error processing data:", error);
+    // console.error("Error processing data:", error);
     throw new Error("Error processing rates");
   }
 }
@@ -720,7 +720,7 @@ export async function GET() {
     await fetchAndStoreRates();
 
     return NextResponse.json(
-      { message: "Rates processed successfully." },
+      // { message: "Rates processed successfully." },
       { status: 200 }
     );
   } catch (error: any) {
