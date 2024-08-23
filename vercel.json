@@ -1,1 +1,7 @@
-
+{
+  "functions": {
+    "app/api/live-gold-rate": {
+      "maxDuration": 30
+    }
+  }
+}
