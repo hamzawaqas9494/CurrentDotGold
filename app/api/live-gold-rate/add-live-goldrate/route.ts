@@ -694,6 +694,7 @@ async function fetchAndStoreRates() {
   try {
     // Fetch the latest rates from the API
     const response = await fetch(`${apiBaseUrl}`);
+    console.log(response);
 
     if (!response.ok) {
       throw new Error("Failed to fetch rates from the API");
@@ -714,7 +715,7 @@ async function fetchAndStoreRates() {
     throw new Error("Error processing rates");
   }
 }
-setInterval(fetchAndStoreRates, 60000);
+setInterval(fetchAndStoreRates, 5 * 60 * 1000);
 export async function GET() {
   try {
     await fetchAndStoreRates();

@@ -46,6 +46,9 @@ import { NextResponse } from "next/server";
 export async function GET(request: Request) {
   try {
     // Delete all tables from the database
+    await sql.query(`
+      DROP TABLE IF EXISTS rates CASCADE;
+    `);
 
     // Create the Rates table with a consistent schema
     await sql.query(`
