@@ -1,7 +1,7 @@
 {
   "crons": [
     {
-      "path": "./app/api/live-gold-rate/add-live-goldrate"
+      "path": "/app/contact"
     }
   ]
 }
