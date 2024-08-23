@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import type { Metadata } from "next";
 import { Navebar, Footer } from "../ui";
 import { useRouter } from "next/navigation";
-export const metadata: Metadata = {
+ const metadata: Metadata = {
   title: "Blog - Gold Rate Pakistan",
 };
 interface Blog {

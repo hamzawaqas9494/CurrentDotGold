@@ -4,7 +4,7 @@ import emailjs from '@emailjs/browser';
 import type { NextPage, Metadata } from 'next';
 import { Navebar } from '@/app/ui';
 
-export const metadata: Metadata = {
+ const metadata: Metadata = {
   title: 'Contact Us - Gold Rate Pakistan',
 };
 

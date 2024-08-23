@@ -2,7 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { GoldRateProvider } from "@/context/GoldRateContext";
 
-export const metadata: Metadata = {
+ const metadata: Metadata = {
   title: "Gold Rate Pakistan",
   description: "Current gold rates in Pakistan",
   icons: {

@@ -3,7 +3,7 @@ import type { NextPage, Metadata } from "next";
 import { Navebar, Footer } from "@/app/ui";
 import { Testimonails } from "./Testimonials";
 
-export const metadata: Metadata = {
+ const metadata: Metadata = {
   title: "Services - Gold Rate Pakistan",
 };
 
