@@ -60,7 +60,7 @@ import path from "path";
 import fs from "fs";
 import { sql } from "@vercel/postgres";
 
-export const config = {
+ const config = {
   api: {
     bodyParser: false, // Disallow body parsing, we're handling it manually
   },
