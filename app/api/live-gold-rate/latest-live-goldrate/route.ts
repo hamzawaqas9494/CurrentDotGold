@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
     const { rows } = await sql`
       SELECT * FROM rates ORDER BY date DESC LIMIT 1;
     `;
-   // Check if we have any results
+    // Check if we have any results
     if (rows.length === 0) {
       return NextResponse.json(
         { message: "No rate data available." },
