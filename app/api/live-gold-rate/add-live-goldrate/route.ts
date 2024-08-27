@@ -900,7 +900,7 @@ async function fetchRates() {
     if (!response.ok) {
       throw new Error(`API Error: ${response.status} - ${response.statusText}`);
     }
-
+    console.log(response);
     const data = await response.json();
     console.log(data);
     const goldRate = parseFloat(data.rates.PKRXAU || "0");
