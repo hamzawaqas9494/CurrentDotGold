@@ -252,14 +252,14 @@ export async function GET(request: Request) {
     // );
     //     `);
 
-    await sql.query(`SELECT * FROM AllBlogs`);
-    const AllBlogs = await sql.query(`SELECT * FROM "AllBlogs";`);
+    await sql.query(`SELECT * FROM allblogs`);
+    const AllBlogs = await sql.query(`SELECT * FROM "allblogs";`);
 
     // Fetch table column information
     const columns = await sql.query(`
       SELECT column_name, data_type
       FROM information_schema.columns
-      WHERE table_name = 'AllBlogs';
+      WHERE table_name = 'allblogs';
     `);
 
     return NextResponse.json(
