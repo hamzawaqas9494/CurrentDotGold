@@ -902,8 +902,10 @@ async function fetchRates() {
     }
 
     const data = await response.json();
+    console.log(data);
     const goldRate = parseFloat(data.rates.PKRXAU || "0");
-    const silverRate = parseFloat(data.rates.XAG || "0");
+    const silverRate = parseFloat(data.rates.PKRXAG || "0");
+    console.log(goldRate, silverRate);
 
     return { goldRate, silverRate };
   } catch (error) {
