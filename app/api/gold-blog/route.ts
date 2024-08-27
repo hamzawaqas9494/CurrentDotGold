@@ -239,19 +239,20 @@ import { NextResponse } from "next/server";
 export async function GET(request: Request) {
   try {
     // Recreate the AllBlogs table
-    await sql.query(`
-      CREATE TABLE AllBlogs (
-  id SERIAL PRIMARY KEY,
-  title VARCHAR(255) NOT NULL,
-  content TEXT NOT NULL,
-  image TEXT,
-  video TEXT,
-  visibility INT,
-  published INT,
-  postedtime TEXT
-);
-    `);
+    //     await sql.query(`
+    //       CREATE TABLE AllBlogs (
+    //   id SERIAL PRIMARY KEY,
+    //   title VARCHAR(255) NOT NULL,
+    //   content TEXT NOT NULL,
+    //   image TEXT,
+    //   video TEXT,
+    //   visibility INT,
+    //   published INT,
+    //   postedtime TEXT
+    // );
+    //     `);
 
+    await sql.query(`SELECT * FROM AllBlogs`);
     const AllBlogs = await sql.query(`SELECT * FROM "AllBlogs";`);
 
     // Fetch table column information
