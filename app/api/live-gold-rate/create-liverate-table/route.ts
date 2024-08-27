@@ -90,10 +90,10 @@ export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
   try {
-    // Drop the Rates table if it exists
-    await sql.query(`
-      DROP TABLE IF EXISTS rates;
-    `);
+    // // Drop the Rates table if it exists
+    // await sql.query(`
+    //   DROP TABLE IF EXISTS rates;
+    // `);
 
     // Create the Rates table with a consistent schema
     await sql.query(`
