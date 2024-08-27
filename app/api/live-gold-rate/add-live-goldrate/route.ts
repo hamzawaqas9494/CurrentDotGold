@@ -962,7 +962,7 @@ export async function GET() {
       return NextResponse.json(
         {
           message:
-            "Rates fetched but no changes detected. No update to the database.",
+            "Rates fetched but no changes detected right? No update to the database.",
         },
         { status: 200 }
       );
