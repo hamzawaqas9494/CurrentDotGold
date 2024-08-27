@@ -99,8 +99,8 @@ export async function GET(request: Request) {
     await sql.query(`
       CREATE TABLE IF NOT EXISTS rates (
         id SERIAL PRIMARY KEY,
-        gold_rate DECIMAL(20, 10) NOT NULL,
-        silver_rate DECIMAL(20, 10) NOT NULL,
+        gold_rate FLOAT NOT NULL,
+        silver_rate FLOAT NOT NULL,
         date TIMESTAMP NOT NULL
       );
     `);

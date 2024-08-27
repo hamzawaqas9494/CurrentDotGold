@@ -886,7 +886,6 @@ import { NextResponse } from "next/server";
 
 async function fetchRates() {
   try {
-    // Fetch the latest rates from the external API with no-cache settings
     const response = await fetch(`${apiBaseUrl}`, {
       method: "GET",
       headers: {
@@ -905,11 +904,9 @@ async function fetchRates() {
     console.log(data);
     const goldRate = parseFloat(data.rates.PKRXAU || "0");
     const silverRate = parseFloat(data.rates.PKRXAG || "0");
-    console.log(goldRate, silverRate);
 
     return { goldRate, silverRate };
   } catch (error) {
-    console.error("Error fetching rates:", error);
     throw new Error("Error fetching rates");
   }
 }
@@ -919,37 +916,33 @@ async function getLatestRatesFromDatabase() {
     const result =
       await sql`SELECT gold_rate, silver_rate FROM rates ORDER BY date DESC LIMIT 1;`;
     if (result.rows.length === 0) {
-      return null; // No rates in the database
+      return null;
     }
     return result.rows[0];
   } catch (error) {
-    console.error("Error fetching latest rates from database:", error);
     throw new Error("Error fetching latest rates from database");
   }
 }
 
 async function storeRatesInDatabase(goldRate: number, silverRate: number) {
+  console.log(goldRate, "goldRate");
+  console.log(silverRate, "silverRate");
   try {
     await sql`
       INSERT INTO rates (gold_rate, silver_rate, date)
       VALUES (${goldRate}, ${silverRate}, NOW());
     `;
-    console.log("Rates stored in database:", { goldRate, silverRate });
   } catch (error) {
-    console.error("Error storing rates in database:", error);
     throw new Error("Error storing rates in database");
   }
 }
 
 export async function GET() {
   try {
-    console.log("GET handler invoked");
-
     const { goldRate, silverRate } = await fetchRates();
-    console.log("Fetched Rates:", { goldRate, silverRate });
 
     const latestRates = await getLatestRatesFromDatabase();
-    console.log("Latest Rates from Database:", latestRates);
+    console.log(latestRates, "db data");
 
     if (
       !latestRates ||
