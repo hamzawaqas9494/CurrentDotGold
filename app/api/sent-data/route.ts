@@ -311,7 +311,7 @@ import path from "path";
 import fs from "fs";
 import { parse } from "querystring";
 import { sql } from "@vercel/postgres";
-
+export const dynamic = "force-dynamic";
 export async function POST(request: NextRequest) {
   const formData = await request.formData();
 
