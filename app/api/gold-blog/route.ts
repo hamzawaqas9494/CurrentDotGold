@@ -235,24 +235,21 @@
 
 import { sql } from "@vercel/postgres";
 import { NextResponse } from "next/server";
+export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
   try {
-    // Drop the Rates table if it exists
-    await sql.query(`
-      DROP TABLE IF EXISTS AllBlogs;
-    `);
-    // await sql.query(`CREATE TABLE AllBlogs (
-    //   id SERIAL PRIMARY KEY,
-    //   title VARCHAR(255) NOT NULL,
-    //   content TEXT NOT NULL,
-    //   image TEXT,
-    //   video TEXT,
-    //   visibility INT,
-    //   published INT,
-    //   postedtime TEXT
-    // );
-    //     `);
+    await sql.query(`CREATE TABLE allblogs (
+      id SERIAL PRIMARY KEY,
+      title VARCHAR(255) NOT NULL,
+      content TEXT NOT NULL,
+      image TEXT,
+      video TEXT,
+      visibility INT,
+      published INT,
+      postedtime TEXT
+    );
+        `);
 
     await sql.query(`SELECT * FROM allblogs`);
     const AllBlogs = await sql.query(`SELECT * FROM "allblogs";`);
@@ -266,8 +263,8 @@ export async function GET(request: Request) {
 
     return NextResponse.json(
       {
-        message: "All tables dropped and AllBlogs table created successfully",
-        // columns: columns.rows,
+        message: "allblogs table created successfully",
+        columns: columns.rows,
         AllBlogs: AllBlogs.rows,
       },
       { status: 200 }
