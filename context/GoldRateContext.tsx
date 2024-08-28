@@ -1,5 +1,4 @@
 "use client";
-import { apiBaseUrl } from "./constants";
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 // Context to provide the gold rate data
@@ -25,34 +24,6 @@ export const GoldRateProvider: React.FC<GoldRateProviderProps> = ({
   const [todayRate, setTodayRate] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
-  // const fetchGoldRate = async () => {
-  //   try {
-  //     const response = await fetch(`${apiBaseUrl}`, {
-  //       method: "GET",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error("Request failed");
-  //     }
-
-  //     const jsonData = await response.json();
-  //     const formData = new FormData();
-  //     formData.append("gold_rate", jsonData.rates.PKRXAU.toString());
-  //     formData.append("silver_rate", jsonData.rates.PKRXAG.toString());
-  //     formData.append("custom_rate", jsonData.rates.PKRXCU.toString());
-  //     await fetch("/api/live-gold-rate/add-live-goldrate", {
-  //       method: "POST",
-  //       body: formData,
-  //     });
-  //   } catch (error) {
-  //     setError("Error fetching or sending gold rate.");
-  //   }
-  // };
-
   const fetchLatestRate = async () => {
     try {
       const response = await fetch("/api/live-gold-rate/latest-live-goldrate");
@@ -69,16 +40,8 @@ export const GoldRateProvider: React.FC<GoldRateProviderProps> = ({
   };
 
   useEffect(() => {
-    console.log("hamza waqas");
     fetchLatestRate();
-
-    // const intervalId = setInterval(() => {
-    //   fetchGoldRate();
-    // }, 86400000);
-
-    // return () => clearInterval(intervalId);
   }, []);
-  console.log(todayRate, "todayRatetodayRatetodayRatetodayRate");
   return (
     <GoldRateContext.Provider value={{ todayRate, isLoading, error }}>
       {children}
