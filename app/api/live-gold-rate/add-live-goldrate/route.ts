@@ -948,13 +948,14 @@ export async function GET() {
       latestRates.gold_rate !== goldRate ||
       latestRates.silver_rate !== silverRate
     ) {
-      // If rates have changed, store new rates in the database
+      console.log("Rates fetched and updated in database successfully.");
       await storeRatesInDatabase(goldRate, silverRate);
       return NextResponse.json(
         { message: "Rates fetched and updated in database successfully." },
         { status: 200 }
       );
     } else {
+      console.log("Rates fetched but no changes detected, No update to the database.");
       return NextResponse.json(
         {
           message:
