@@ -238,9 +238,11 @@ import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
   try {
-    // Recreate the AllBlogs table
-    //     await sql.query(`
-    //       CREATE TABLE AllBlogs (
+    // Drop the Rates table if it exists
+    await sql.query(`
+      DROP TABLE IF EXISTS AllBlogs;
+    `);
+    // await sql.query(`CREATE TABLE AllBlogs (
     //   id SERIAL PRIMARY KEY,
     //   title VARCHAR(255) NOT NULL,
     //   content TEXT NOT NULL,
