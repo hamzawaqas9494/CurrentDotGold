@@ -900,9 +900,7 @@ async function fetchRates() {
     if (!response.ok) {
       throw new Error(`API Error: ${response.status} - ${response.statusText}`);
     }
-    console.log(response);
     const data = await response.json();
-    console.log(data);
     const goldRate = parseFloat(data.rates.PKRXAU || "0");
     const silverRate = parseFloat(data.rates.PKRXAG || "0");
 
@@ -926,8 +924,6 @@ async function getLatestRatesFromDatabase() {
 }
 
 async function storeRatesInDatabase(goldRate: number, silverRate: number) {
-  console.log(goldRate, "goldRate");
-  console.log(silverRate, "silverRate");
   try {
     await sql`
       INSERT INTO rates (gold_rate, silver_rate, date)
@@ -941,10 +937,12 @@ async function storeRatesInDatabase(goldRate: number, silverRate: number) {
 export async function GET() {
   try {
     const { goldRate, silverRate } = await fetchRates();
-
+    console.log(
+      goldRate,
+      silverRate,
+      "Hit Route With CronJob and Get New Rates in Tory Ounce From API"
+    );
     const latestRates = await getLatestRatesFromDatabase();
-    console.log(latestRates, "db data");
-
     if (
       !latestRates ||
       latestRates.gold_rate !== goldRate ||
@@ -953,23 +951,19 @@ export async function GET() {
       // If rates have changed, store new rates in the database
       await storeRatesInDatabase(goldRate, silverRate);
       return NextResponse.json(
-        {
-          message: "Rates fetched and updated in database successfully.",
-          rates: { goldRate, silverRate },
-        },
+        { message: "Rates fetched and updated in database successfully." },
         { status: 200 }
       );
     } else {
       return NextResponse.json(
         {
           message:
-            "Rates fetched but no changes detected right? No update to the database.",
+            "Rates fetched but no changes detected, No update to the database.",
         },
         { status: 200 }
       );
     }
   } catch (error: any) {
-    console.error("Error processing request:", error);
     return NextResponse.json(
       { error: `Failed to process request: ${error.message}` },
       { status: 500 }
