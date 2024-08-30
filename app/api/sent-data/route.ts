@@ -404,8 +404,8 @@ export async function POST(request: NextRequest) {
   const imageFile = formData.get("image") as File | null;
   const videoFile = formData.get("video") as File | null;
 
-  const imagePath = imageFile ? `/uploads/${imageFile.name}` : null;
-  const videoPath = videoFile ? `/uploads/${videoFile.name}` : null;
+  const imagePath = imageFile ? `/public/uploads/${imageFile.name}` : null;
+  const videoPath = videoFile ? `/public/uploads/${videoFile.name}` : null;
 
   if (!title || !content) {
     return NextResponse.json(
