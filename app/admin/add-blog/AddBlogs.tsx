@@ -262,7 +262,7 @@ const AddBlogs: FC = () => {
         method: "POST",
         body: formData,
       });
-
+      console.log(response, "response from sent data ");
       if (response.ok) {
         console.log("Blog post created successfully!yup");
       } else {
