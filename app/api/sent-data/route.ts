@@ -322,9 +322,9 @@ export async function POST(request: NextRequest) {
 
   const imageFile = formData.get("image") as File | null;
   const videoFile = formData.get("video") as File | null;
-  // change in path
-  const imagePath = imageFile ? `/public/uploads/${imageFile.name}` : null;
-  const videoPath = videoFile ? `/public/uploads/${videoFile.name}` : null;
+
+  const imagePath = imageFile ? `/uploads/${imageFile.name}` : null;
+  const videoPath = videoFile ? `/uploads/${videoFile.name}` : null;
   const postedtime = formData.get("postedtime") as string;
   console.log(title);
   console.log(content);
@@ -369,7 +369,7 @@ export async function POST(request: NextRequest) {
 
     // Insert data into the Blogs table
     const result = await sql`
-      INSERT INTO allblogs (title, content, image, video, visibility, published, postedtime)
+      INSERT INTO AllBlogs (title, content, image, video, visibility, published, postedtime)
       VALUES (${title}, ${content}, ${imagePath}, ${videoPath}, ${visibility}, ${published}, ${postedtime})
       RETURNING *;
     `;
@@ -438,9 +438,9 @@ export async function POST(request: NextRequest) {
 //       );
 //     }
 
-//     // Insert data into the `allblogs` table
+//     // Insert data into the `AllBlogs` table
 //     const result = await sql`
-//       INSERT INTO allblogs (title, content, image, video, visibility, published, postedtime)
+//       INSERT INTO AllBlogs (title, content, image, video, visibility, published, postedtime)
 //       VALUES (${title}, ${content}, ${imagePath}, ${videoPath}, ${visibility}, ${published}, ${postedtime})
 //       RETURNING *;
 //     `;
