@@ -328,12 +328,8 @@ export async function POST(request: NextRequest) {
   const postedtime = formData.get("postedtime") as string;
   console.log(title);
   console.log(content);
-  console.log(visibility);
-  console.log(published);
-  console.log(imageFile);
-  console.log(videoFile);
   console.log(imagePath);
-  console.log(videoPath);
+
   if (!title || !content) {
     return NextResponse.json(
       { error: "Title and content are required" },
