@@ -98,7 +98,6 @@ const Blog: React.FC = () => {
                   <p className="mt-10 overflow-hidden text-ellipsis content-box">
                     {blog.content}
                   </p>
-
                   <div className="flex items-center justify-between  border-b-2 py-10">
                     <button
                       onClick={() => handleUpdate(blog.id)}

@@ -213,9 +213,7 @@ interface Blog {
 
 const AddBlogs: FC = () => {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const id = searchParams.get("id");
-  // console.log(id, "id on add blog page");
   const [blog, setBlog] = useState<any>({ id });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -223,29 +221,6 @@ const AddBlogs: FC = () => {
   const [content, setContent] = useState<string>("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [videoFile, setVideoFile] = useState<File | null>(null);
-
-  // useEffect(() => {
-  //   if (id) {
-  //     const fetchBlog = async () => {
-  //       try {
-  //         const response = await fetch(`/api/get-blogs?id=${id}`);
-  //         const data = await response.json();
-
-  //         if (!response.ok) {
-  //           throw new Error("Error fetching blog data.");
-  //         }
-
-  //         setBlog(data.specificBlog[0]);
-  //       } catch (error) {
-  //         setError("Error fetching blog data.");
-  //       } finally {
-  //         setLoading(false);
-  //       }
-  //     };
-  //     fetchBlog();
-  //   }
-  // }, [id]);
-
   const handlePublish = async () => {
     try {
       const currentDateTime = new Date().toLocaleString();
@@ -262,11 +237,11 @@ const AddBlogs: FC = () => {
         method: "POST",
         body: formData,
       });
-      console.log(response, "response from sent data ");
+
       if (response.ok) {
-        console.log("Blog post created successfully!yup");
+        console.log("Blog post created successfully!");
       } else {
-        console.error("Failed to create a blog postyyyyyyyyy.");
+        console.error("Failed to create a blog post.");
       }
     } catch (error) {
       console.error("An error occurred:", error);
