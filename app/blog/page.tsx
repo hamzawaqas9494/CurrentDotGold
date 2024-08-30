@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import type { Metadata } from "next";
 import { Navebar, Footer } from "../ui";
 import { useRouter } from "next/navigation";
- const metadata: Metadata = {
+const metadata: Metadata = {
   title: "Blog - Gold Rate Pakistan",
 };
 interface Blog {
@@ -98,6 +98,7 @@ const Blog: React.FC = () => {
                   <p className="mt-10 overflow-hidden text-ellipsis content-box">
                     {blog.content}
                   </p>
+
                   <div className="flex items-center justify-between  border-b-2 py-10">
                     <button
                       onClick={() => handleUpdate(blog.id)}
