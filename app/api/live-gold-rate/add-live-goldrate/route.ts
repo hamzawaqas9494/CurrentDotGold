@@ -955,7 +955,9 @@ export async function GET() {
         { status: 200 }
       );
     } else {
-      console.log("Rates fetched but no changes detected, No update to the database.");
+      console.log(
+        "Rates fetched but no changes detected, No update to the database."
+      );
       return NextResponse.json(
         {
           message:
