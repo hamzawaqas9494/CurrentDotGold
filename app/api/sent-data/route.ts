@@ -375,7 +375,7 @@ export async function POST(request: NextRequest) {
     `;
 
     return NextResponse.json({
-      message: "Blog post created successfully",
+      // message: "Blog post created successfully",
       result: result.rows[0],
     });
   } catch (error) {

@@ -258,16 +258,15 @@ const AddBlogs: FC = () => {
       formData.append("visibility", "1");
       formData.append("published", "1");
       formData.append("postedtime", currentDateTime);
-      console.log(currentDateTime, "currentDateTime");
       const response = await fetch("/api/sent-data", {
         method: "POST",
         body: formData,
       });
 
       if (response.ok) {
-        console.log("Blog post created successfully!");
+        console.log("Blog post created successfully!yup");
       } else {
-        console.error("Failed to create a blog post.");
+        console.error("Failed to create a blog postyyyyyyyyy.");
       }
     } catch (error) {
       console.error("An error occurred:", error);
