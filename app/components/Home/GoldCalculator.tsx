@@ -47,25 +47,25 @@ const GoldCalculator: FC = ({}) => {
       {
         units: Units.Grams,
         purity: 22,
-        rate: (0.916 * 11.663 * todayRate) / 31.1 / 11.663,
+        rate: (0.9166 * 11.6638 * todayRate) / 31.1 / 11.663,
       },
       {
         units: Units.Grams,
         purity: 21,
-        rate: (0.875 * 11.663 * todayRate) / 31.1 / 11.663,
+        rate: (0.875 * 11.6638 * todayRate) / 31.1 / 11.6638,
       },
 
       // Gold rates in Tola
-      { units: Units.Tola, purity: 24, rate: todayRate * 0.375 },
+      { units: Units.Tola, purity: 24, rate: (todayRate / 31.1) * 11.6638 },
       {
         units: Units.Tola,
         purity: 22,
-        rate: (0.916 * 11.663 * todayRate) / 31.1,
+        rate: (0.9166 * 11.6638 * todayRate) / 31.1,
       },
       {
         units: Units.Tola,
         purity: 21,
-        rate: (0.875 * 11.663 * todayRate) / 31.1,
+        rate: (0.875 * 11.6638 * todayRate) / 31.1,
       },
     ];
   }, [todayRate]);

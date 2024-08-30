@@ -369,7 +369,7 @@ export async function POST(request: NextRequest) {
 
     // Insert data into the Blogs table
     const result = await sql`
-      INSERT INTO AllBlogs (title, content, image, video, visibility, published, postedtime)
+      INSERT INTO allblogs (title, content, image, video, visibility, published, postedtime)
       VALUES (${title}, ${content}, ${imagePath}, ${videoPath}, ${visibility}, ${published}, ${postedtime})
       RETURNING *;
     `;
@@ -438,9 +438,9 @@ export async function POST(request: NextRequest) {
 //       );
 //     }
 
-//     // Insert data into the `AllBlogs` table
+//     // Insert data into the `allblogs` table
 //     const result = await sql`
-//       INSERT INTO AllBlogs (title, content, image, video, visibility, published, postedtime)
+//       INSERT INTO allblogs (title, content, image, video, visibility, published, postedtime)
 //       VALUES (${title}, ${content}, ${imagePath}, ${videoPath}, ${visibility}, ${published}, ${postedtime})
 //       RETURNING *;
 //     `;
