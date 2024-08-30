@@ -46,7 +46,7 @@ const Blog: React.FC = () => {
       }
     };
     fetchBlogs();
-  }, []);
+  }, [allBlogs]);
 
   const indexOfLastBlog = currentPage * blogsPerPage;
   const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
