@@ -387,63 +387,120 @@
 // //   }
 // // }
 
+// import { NextRequest, NextResponse } from "next/server";
+// import path from "path";
+// import fs from "fs";
+// import { sql } from "@vercel/postgres";
+
+// export async function POST(request: NextRequest) {
+//   const formData = await request.formData();
+
+//   const title = formData.get("title") as string;
+//   const content = formData.get("content") as string;
+//   const visibility = formData.get("visibility") as string;
+//   const published = formData.get("published") as string;
+//   const postedtime = formData.get("postedtime") as string;
+//   const imageFile = formData.get("image") as File | null;
+//   const videoFile = formData.get("video") as File | null;
+//   const imagePath = imageFile ? `/uploads/${imageFile.name}` : null;
+//   const videoPath = videoFile ? `/uploads/${videoFile.name}` : null;
+
+//   console.log(title, "title");
+//   console.log(content, "content");
+//   console.log(imagePath, "imagePath");
+
+//   if (!title || !content) {
+//     return NextResponse.json(
+//       { error: "Title and content are required" },
+//       { status: 400 }
+//     );
+//   }
+
+//   try {
+//     // Ensure the `public/uploads` directory exists
+//     const uploadsDir = path.join(process.cwd(), "public", "uploads");
+//     if (!fs.existsSync(uploadsDir)) {
+//       fs.mkdirSync(uploadsDir, { recursive: true });
+//     }
+
+//     // Save files to the `public/uploads` directory
+//     if (imageFile) {
+//       const imagePathFull = path.join(uploadsDir, imageFile.name);
+//       fs.writeFileSync(
+//         imagePathFull,
+//         Buffer.from(await imageFile.arrayBuffer())
+//       );
+//     }
+
+//     if (videoFile) {
+//       const videoPathFull = path.join(uploadsDir, videoFile.name);
+//       fs.writeFileSync(
+//         videoPathFull,
+//         Buffer.from(await videoFile.arrayBuffer())
+//       );
+//     }
+
+//     // Insert data into the `allblogs` table
+//     const result = await sql`
+//       INSERT INTO allblogs (title, content, image, video, visibility, published, postedtime)
+//       VALUES (${title}, ${content}, ${imagePath}, ${videoPath}, ${visibility}, ${published}, ${postedtime})
+//       RETURNING *;
+//     `;
+
+//     return NextResponse.json({
+//       message: "Blog post created successfully!",
+//       result: result.rows[0],
+//     });
+//   } catch (error) {
+//     console.error("Database error:", error); // Log error details
+//     return NextResponse.json(
+//       { error: "Internal server error" },
+//       { status: 500 }
+//     );
+//   }
+// }
 import { NextRequest, NextResponse } from "next/server";
-import path from "path";
-import fs from "fs";
 import { sql } from "@vercel/postgres";
 
 export async function POST(request: NextRequest) {
-  const formData = await request.formData();
-
-  const title = formData.get("title") as string;
-  const content = formData.get("content") as string;
-  const visibility = formData.get("visibility") as string;
-  const published = formData.get("published") as string;
-  const postedtime = formData.get("postedtime") as string;
-  const imageFile = formData.get("image") as File | null;
-  const videoFile = formData.get("video") as File | null;
-  const imagePath = imageFile ? `/uploads/${imageFile.name}` : null;
-  const videoPath = videoFile ? `/uploads/${videoFile.name}` : null;
-
-  console.log(title, "title");
-  console.log(content, "content");
-  console.log(imagePath, "imagePath");
-
-  if (!title || !content) {
-    return NextResponse.json(
-      { error: "Title and content are required" },
-      { status: 400 }
-    );
-  }
-
   try {
-    // Ensure the `public/uploads` directory exists
-    const uploadsDir = path.join(process.cwd(), "public", "uploads");
-    if (!fs.existsSync(uploadsDir)) {
-      fs.mkdirSync(uploadsDir, { recursive: true });
+    const formData = await request.formData();
+
+    const title = formData.get("title") as string;
+    const content = formData.get("content") as string;
+    const visibility = formData.get("visibility") as string;
+    const published = formData.get("published") as string;
+    const postedtime = formData.get("postedtime") as string;
+    const imageFile = formData.get("image") as File | null;
+    const videoFile = formData.get("video") as File | null;
+
+    // Validation for required fields
+    if (!title || !content) {
+      return NextResponse.json(
+        { error: "Title and content are required" },
+        { status: 400 }
+      );
     }
 
-    // Save files to the `public/uploads` directory
+    let imageBase64 = null;
+    let videoBase64 = null;
+
+    // Convert image to Base64
     if (imageFile) {
-      const imagePathFull = path.join(uploadsDir, imageFile.name);
-      fs.writeFileSync(
-        imagePathFull,
-        Buffer.from(await imageFile.arrayBuffer())
-      );
+      const imageBuffer = Buffer.from(await imageFile.arrayBuffer());
+      imageBase64 = imageBuffer.toString("base64");
     }
 
+    // Convert video to Base64
     if (videoFile) {
-      const videoPathFull = path.join(uploadsDir, videoFile.name);
-      fs.writeFileSync(
-        videoPathFull,
-        Buffer.from(await videoFile.arrayBuffer())
-      );
+      const videoBuffer = Buffer.from(await videoFile.arrayBuffer());
+      videoBase64 = videoBuffer.toString("base64");
     }
 
     // Insert data into the `allblogs` table
     const result = await sql`
       INSERT INTO allblogs (title, content, image, video, visibility, published, postedtime)
-      VALUES (${title}, ${content}, ${imagePath}, ${videoPath}, ${visibility}, ${published}, ${postedtime})
+      VALUES (${title}, ${content}, ${imageBase64}, ${videoBase64}, ${visibility}, ${published}, ${postedtime})
       RETURNING *;
     `;
 
@@ -452,7 +509,7 @@ export async function POST(request: NextRequest) {
       result: result.rows[0],
     });
   } catch (error) {
-    console.error("Database error:", error); // Log error details
+    console.error("Error during blog post creation:", error);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

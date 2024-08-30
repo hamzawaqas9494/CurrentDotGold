@@ -302,7 +302,7 @@ const Read: FC = () => {
                 {singleBlog.image && (
                   <img
                     className="mt-10"
-                    src={singleBlog.image}
+                    src={`data:image/jpeg;base64,${singleBlog.image}`}
                     alt="blog image"
                   />
                 )}
