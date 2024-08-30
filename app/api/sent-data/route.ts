@@ -400,12 +400,14 @@ export async function POST(request: NextRequest) {
   const visibility = formData.get("visibility") as string;
   const published = formData.get("published") as string;
   const postedtime = formData.get("postedtime") as string;
-
   const imageFile = formData.get("image") as File | null;
   const videoFile = formData.get("video") as File | null;
-
   const imagePath = imageFile ? `/uploads/${imageFile.name}` : null;
   const videoPath = videoFile ? `/uploads/${videoFile.name}` : null;
+
+  console.log(title, "title");
+  console.log(content, "content");
+  console.log(imagePath, "imagePath");
 
   if (!title || !content) {
     return NextResponse.json(
