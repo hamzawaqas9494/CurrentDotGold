@@ -245,7 +245,7 @@ const AddBlogs: FC = () => {
   //     fetchBlog();
   //   }
   // }, [id]);
-  console.log(id, "idid");
+
   const handlePublish = async () => {
     try {
       const currentDateTime = new Date().toLocaleString();

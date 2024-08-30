@@ -330,8 +330,8 @@ export async function POST(request: NextRequest) {
   console.log(content);
   console.log(visibility);
   console.log(published);
-  console.log(imagePath);
-  console.log(postedtime);
+  console.log(imageFile);
+  console.log(videoFile);
   if (!title || !content) {
     return NextResponse.json(
       { error: "Title and content are required" },
@@ -348,6 +348,7 @@ export async function POST(request: NextRequest) {
         "uploads",
         imageFile.name
       );
+
       fs.writeFileSync(
         imagePathFull,
         Buffer.from(await imageFile.arrayBuffer())
