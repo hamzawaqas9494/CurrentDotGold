@@ -480,8 +480,8 @@ export async function POST(request: NextRequest) {
   const uploadsDir = path.join(process.cwd(), "public", "uploads");
 
   // Define the paths for the image and video (relative to the public directory)
-  const imagePath = imageFile ? `/uploads/${imageFile.name}` : null;
-  const videoPath = videoFile ? `/uploads/${videoFile.name}` : null;
+  const imagePath = imageFile ? `/public/uploads/${imageFile.name}` : null;
+  const videoPath = videoFile ? `/public/uploads/${videoFile.name}` : null;
 
   try {
     // Save files to the existing `public/uploads` directory
