@@ -387,82 +387,10 @@
 //   }
 // }
 
-// // import { NextRequest, NextResponse } from "next/server";
-// // import path from "path";
-// // import fs from "fs";
-// // import { sql } from "@vercel/postgres";
-
-// // export async function POST(request: NextRequest) {
-// //   const formData = await request.formData();
-
-// //   const title = formData.get("title") as string;
-// //   const content = formData.get("content") as string;
-// //   const visibility = formData.get("visibility") as string;
-// //   const published = formData.get("published") as string;
-// //   const postedtime = formData.get("postedtime") as string;
-
-// //   const imageFile = formData.get("image") as File | null;
-// //   const videoFile = formData.get("video") as File | null;
-
-// //   const imagePath = imageFile ? `/uploads/${imageFile.name}` : null;
-// //   const videoPath = videoFile ? `/uploads/${videoFile.name}` : null;
-
-// //   if (!title || !content) {
-// //     return NextResponse.json(
-// //       { error: "Title and content are required" },
-// //       { status: 400 }
-// //     );
-// //   }
-
-// //   try {
-// //     // Ensure the `public/uploads` directory exists
-// //     const uploadsDir = path.join(process.cwd(), "public", "uploads");
-// //     if (!fs.existsSync(uploadsDir)) {
-// //       fs.mkdirSync(uploadsDir, { recursive: true });
-// //     }
-
-// //     // Save files to the `public/uploads` directory
-// //     if (imageFile) {
-// //       const imagePathFull = path.join(uploadsDir, imageFile.name);
-// //       fs.writeFileSync(
-// //         imagePathFull,
-// //         Buffer.from(await imageFile.arrayBuffer())
-// //       );
-// //     }
-
-// //     if (videoFile) {
-// //       const videoPathFull = path.join(uploadsDir, videoFile.name);
-// //       fs.writeFileSync(
-// //         videoPathFull,
-// //         Buffer.from(await videoFile.arrayBuffer())
-// //       );
-// //     }
-
-// //     // Insert data into the `allblogs` table
-// //     const result = await sql`
-// //       INSERT INTO allblogs (title, content, image, video, visibility, published, postedtime)
-// //       VALUES (${title}, ${content}, ${imagePath}, ${videoPath}, ${visibility}, ${published}, ${postedtime})
-// //       RETURNING *;
-// //     `;
-
-// //     return NextResponse.json({
-// //       message: "Blog post created successfully!",
-// //       result: result.rows[0],
-// //     });
-// //   } catch (error) {
-// //     console.error("Database error:", error); // Log error details
-// //     return NextResponse.json(
-// //       { error: "Internal server error" },
-// //       { status: 500 }
-// //     );
-// //   }
-// // }
 import { NextRequest, NextResponse } from "next/server";
 import path from "path";
 import fs from "fs";
 import { sql } from "@vercel/postgres";
-
-export const dynamic = "force-dynamic";
 
 export async function POST(request: NextRequest) {
   const formData = await request.formData();
@@ -471,24 +399,13 @@ export async function POST(request: NextRequest) {
   const content = formData.get("content") as string;
   const visibility = formData.get("visibility") as string;
   const published = formData.get("published") as string;
+  const postedtime = formData.get("postedtime") as string;
 
   const imageFile = formData.get("image") as File | null;
   const videoFile = formData.get("video") as File | null;
 
-  const cleanImageFileName: any = imageFile
-    ? imageFile.name.replace(/\s+/g, "-").replace(/[()]/g, "")
-    : null;
-  const cleanVideoFileName: any = videoFile
-    ? videoFile.name.replace(/\s+/g, "-").replace(/[()]/g, "")
-    : null;
-
-  const imagePath = cleanImageFileName
-    ? `/uploads/${cleanImageFileName}`
-    : null;
-  const videoPath = cleanVideoFileName
-    ? `/uploads/${cleanVideoFileName}`
-    : null;
-  const postedtime = formData.get("postedtime") as string;
+  const imagePath = imageFile ? `/uploads/${imageFile.name}` : null;
+  const videoPath = videoFile ? `/uploads/${videoFile.name}` : null;
 
   if (!title || !content) {
     return NextResponse.json(
@@ -498,13 +415,15 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const uploadsDir = path.join(process.cwd(), "public", "uploadsimages");
+    // Ensure the `public/uploads` directory exists
+    const uploadsDir = path.join(process.cwd(), "public", "uploads");
     if (!fs.existsSync(uploadsDir)) {
       fs.mkdirSync(uploadsDir, { recursive: true });
     }
 
+    // Save files to the `public/uploads` directory
     if (imageFile) {
-      const imagePathFull = path.join(uploadsDir, cleanImageFileName);
+      const imagePathFull = path.join(uploadsDir, imageFile.name);
       fs.writeFileSync(
         imagePathFull,
         Buffer.from(await imageFile.arrayBuffer())
@@ -512,13 +431,14 @@ export async function POST(request: NextRequest) {
     }
 
     if (videoFile) {
-      const videoPathFull = path.join(uploadsDir, cleanVideoFileName);
+      const videoPathFull = path.join(uploadsDir, videoFile.name);
       fs.writeFileSync(
         videoPathFull,
         Buffer.from(await videoFile.arrayBuffer())
       );
     }
 
+    // Insert data into the `allblogs` table
     const result = await sql`
       INSERT INTO allblogs (title, content, image, video, visibility, published, postedtime)
       VALUES (${title}, ${content}, ${imagePath}, ${videoPath}, ${visibility}, ${published}, ${postedtime})
@@ -526,10 +446,11 @@ export async function POST(request: NextRequest) {
     `;
 
     return NextResponse.json({
-      message: "Blog post created successfully",
+      message: "Blog post created successfully!",
       result: result.rows[0],
     });
   } catch (error) {
+    console.error("Database error:", error); // Log error details
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
