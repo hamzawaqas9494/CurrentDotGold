@@ -344,7 +344,7 @@ export async function POST(request: NextRequest) {
     if (imageFile) {
       const imagePathFull = path.join(
         process.cwd(),
-        "public",
+        "app",
         "uploads",
         imageFile.name
       );
@@ -357,7 +357,7 @@ export async function POST(request: NextRequest) {
     if (videoFile) {
       const videoPathFull = path.join(
         process.cwd(),
-        "public",
+        "app",
         "uploads",
         videoFile.name
       );
