@@ -323,8 +323,8 @@ export async function POST(request: NextRequest) {
   const imageFile = formData.get("image") as File | null;
   const videoFile = formData.get("video") as File | null;
 
-  const imagePath = imageFile ? `/uploads/${imageFile.name}` : null;
-  const videoPath = videoFile ? `/uploads/${videoFile.name}` : null;
+  const imagePath = imageFile ? `${imageFile.name}` : null;
+  const videoPath = videoFile ? `${videoFile.name}` : null;
   const postedtime = formData.get("postedtime") as string;
   console.log(title);
   console.log(content);
@@ -332,6 +332,8 @@ export async function POST(request: NextRequest) {
   console.log(published);
   console.log(imageFile);
   console.log(videoFile);
+  console.log(imagePath);
+  console.log(videoPath);
   if (!title || !content) {
     return NextResponse.json(
       { error: "Title and content are required" },
