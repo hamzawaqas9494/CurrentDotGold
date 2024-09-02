@@ -74,7 +74,7 @@ const Read: FC = () => {
       }
 
       try {
-        const blogResponse = await fetch(`/api/single?id=${id}`);
+        const blogResponse = await fetch(`/api/single-blog?id=${id}`);
         if (!blogResponse.ok) {
           throw new Error("Failed to fetch blog data.");
         }
