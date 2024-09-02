@@ -33,7 +33,8 @@ const Page: React.FC = () => {
           throw new Error("Error fetching all blogs from database.");
         }
         const data = await response.json();
-        setAllblogs(data.alldata);
+        console.log(data, "data");
+        setAllblogs(data.totalBlogs);
       } catch (error) {
         setError("Error fetching blogs.");
       } finally {

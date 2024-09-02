@@ -243,8 +243,8 @@ export async function GET(request: Request) {
       id SERIAL PRIMARY KEY,
       title VARCHAR(255) NOT NULL,
       content TEXT NOT NULL,
-      image TEXT,
-      video TEXT,
+      image BYTEA,
+      video BYTEA,
       visibility INT,
       published INT,
       postedtime TEXT
