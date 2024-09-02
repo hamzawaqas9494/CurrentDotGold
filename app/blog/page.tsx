@@ -488,6 +488,7 @@ const Blog: React.FC = () => {
 
   useEffect(() => {
     fetchBlogs(currentPage);
+    console.log("run");
   }, [currentPage]);
 
   const totalPages = Math.ceil(totalBlogs / blogsPerPage);

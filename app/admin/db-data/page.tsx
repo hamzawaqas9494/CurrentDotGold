@@ -34,7 +34,7 @@ const Page: React.FC = () => {
         }
         const data = await response.json();
         console.log(data, "data");
-        setAllblogs(data.totalBlogs);
+        setAllblogs(data.allBlogs);
       } catch (error) {
         setError("Error fetching blogs.");
       } finally {

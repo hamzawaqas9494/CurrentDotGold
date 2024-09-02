@@ -85,20 +85,22 @@ export async function GET(req: NextRequest) {
 
     const page = parseInt(url.searchParams.get("page") || "1");
     const blogsPerPage = parseInt(url.searchParams.get("blogsPerPage") || "3");
-
+    console.log(page, blogsPerPage);
     const offset = (page - 1) * blogsPerPage;
 
     const paginatedBlogs = await sql`
       SELECT * FROM allblogs ORDER BY ID DESC LIMIT ${blogsPerPage} OFFSET ${offset};
     `;
     const totalBlogs = await sql`SELECT COUNT(*) FROM allblogs;`;
+    const allBlogs = await sql`SELECT * FROM allblogs;`;
     const specificBlogResult =
       await sql`SELECT * FROM allblogs WHERE ID = ${id};`;
     const previousFiveResult =
-      await sql`SELECT * FROM allblogs ORDER BY ID DESC LIMIT 5;`;
+      await sql`SELECT * FROM allblogs ORDER BY ID DESC LIMIT 30 OFFSET 3;`;
 
     return NextResponse.json(
       {
+        allBlogs: allBlogs.rows,
         paginatedBlogs: paginatedBlogs.rows,
         totalBlogs: totalBlogs.rows[0].count,
         previousFive: previousFiveResult.rows,

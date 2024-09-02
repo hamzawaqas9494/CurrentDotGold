@@ -233,26 +233,82 @@
 //   }
 // }
 
+// import { sql } from "@vercel/postgres";
+// import { NextResponse } from "next/server";
+// export const dynamic = "force-dynamic";
+
+// export async function GET(request: Request) {
+//   try {
+//     await sql.query(`
+//       CREATE TABLE allblogs (
+//         id SERIAL PRIMARY KEY,
+//         title VARCHAR(255) NOT NULL,
+//         content TEXT NOT NULL,
+//         image TEXT,
+//         image_name VARCHAR(255),
+//         video TEXT,
+//         video_name VARCHAR(255),
+//         visibility VARCHAR(50),
+//         published BOOLEAN,
+//         postedtime TIMESTAMP
+//       );
+//     `);
+
+//     // Fetch table column information
+//     const columns = await sql.query(`
+//       SELECT column_name, data_type
+//       FROM information_schema.columns
+//       WHERE table_name = 'allblogs';
+//     `);
+
+//     return NextResponse.json(
+//       {
+//         message: "allblogs table created successfully",
+//         columns: columns.rows,
+//       },
+//       { status: 200 }
+//     );
+//   } catch (error: any) {
+//     console.error("Error:", error);
+//     return NextResponse.json(
+//       {
+//         error: `Failed to drop tables or create AllBlogs table: ${error.message}`,
+//       },
+//       { status: 500 }
+//     );
+//   }
+// }
 import { sql } from "@vercel/postgres";
 import { NextResponse } from "next/server";
+
 export const dynamic = "force-dynamic";
+
+async function allBlogsTable() {
+  try {
+    await sql.query(`
+      CREATE TABLE IF NOT EXISTS allblogs (
+        id SERIAL PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        content TEXT NOT NULL,
+        image TEXT,
+        image_name VARCHAR(255),
+        video TEXT,
+        video_name VARCHAR(255),
+        visibility VARCHAR(50),
+        published BOOLEAN,
+        postedtime TIMESTAMP
+      );
+    `);
+    console.log("Table 'allblogs' created or already exists.");
+  } catch (error) {
+    console.error("Error creating table:", error);
+  }
+}
 
 export async function GET(request: Request) {
   try {
-    await sql.query(`CREATE TABLE allblogs (
-      id SERIAL PRIMARY KEY,
-      title VARCHAR(255) NOT NULL,
-      content TEXT NOT NULL,
-      image BYTEA,
-      video BYTEA,
-      visibility INT,
-      published INT,
-      postedtime TEXT
-    );
-        `);
-
-    await sql.query(`SELECT * FROM allblogs`);
-    const AllBlogs = await sql.query(`SELECT * FROM "allblogs";`);
+    // Ensure the table is created
+    await allBlogsTable();
 
     // Fetch table column information
     const columns = await sql.query(`
@@ -263,17 +319,16 @@ export async function GET(request: Request) {
 
     return NextResponse.json(
       {
-        message: "allblogs table created successfully",
+        message: "Fetched table columns successfully",
         columns: columns.rows,
-        AllBlogs: AllBlogs.rows,
       },
       { status: 200 }
     );
   } catch (error: any) {
-    console.error("Error:", error);
+    console.error("Error fetching table columns:", error);
     return NextResponse.json(
       {
-        error: `Failed to drop tables or create AllBlogs table: ${error.message}`,
+        error: `Failed to fetch table columns: ${error.message}`,
       },
       { status: 500 }
     );
