@@ -79,7 +79,8 @@ const Read: FC = () => {
           throw new Error("Failed to fetch blog data.");
         }
         const blogData = await blogResponse.json();
-        setSingleBlog(blogData.specificBlog[0]);
+        console.log(blogData, "blogData hamza");
+        setSingleBlog(blogData.specificBlogResult[0]);
       } catch (error: any) {
         setError("Error fetching blog data.");
       } finally {
