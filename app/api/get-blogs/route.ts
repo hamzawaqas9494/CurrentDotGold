@@ -100,11 +100,11 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(
       {
-        allBlogs: allBlogs.rows,
+        // allBlogs: allBlogs.rows,
         paginatedBlogs: paginatedBlogs.rows,
         totalBlogs: totalBlogs.rows[0].count,
-        previousFive: previousFiveResult.rows,
-        specificBlogResult: specificBlogResult.rows,
+        // previousFive: previousFiveResult.rows,
+        // specificBlogResult: specificBlogResult.rows,
       },
       { status: 200 }
     );
