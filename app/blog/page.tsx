@@ -558,7 +558,7 @@ const Blog: React.FC = () => {
                   Recent Posts
                 </p>
               </div>
-              {/* <div className=" col-span-12 sm:col-span-4 xl:col-span-12">
+              <div className=" col-span-12 sm:col-span-4 xl:col-span-12">
                 {previousFiveBlogs.length > 0 ? (
                   previousFiveBlogs.map((blog) => (
                     <div
@@ -578,7 +578,7 @@ const Blog: React.FC = () => {
                 ) : (
                   <div>No Recent Posts Available</div>
                 )}
-              </div> */}
+              </div>
             </div>
           </div>
         </div>
