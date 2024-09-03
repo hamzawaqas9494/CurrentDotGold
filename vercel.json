@@ -1,8 +1,8 @@
 {
   "crons": [
     {
-      "path": "/app/api/live-gold-rate/add-live-goldrate",
-      "schedule": "12 1 * * *"
+      "path": "/api/live-gold-rate/add-live-goldrate",
+      "schedule": "17 1 * * *"
     }
   ]
 }
