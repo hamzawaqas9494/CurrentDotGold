@@ -2,7 +2,7 @@
   "crons": [
     {
       "path": "/api/live-gold-rate/add-liverate-table",
-      "schedule": "0/1 * * * *"
+      "schedule": "* * * * *"
     },
     {
       "path": "/api/live-gold-rate/add-liverate-table",
