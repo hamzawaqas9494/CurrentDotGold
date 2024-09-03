@@ -223,8 +223,8 @@ const AddBlogs: FC = () => {
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const handlePublish = async () => {
     try {
-      const currentDateTime = new Date().toLocaleString();
-      console.log(currentDateTime);
+      // const currentDateTime = new Date().toLocaleString();
+      // console.log(currentDateTime);
       const formData = new FormData();
       formData.append("title", title);
       formData.append("content", content);
@@ -232,8 +232,8 @@ const AddBlogs: FC = () => {
       if (videoFile) formData.append("video", videoFile);
       formData.append("visibility", "1");
       formData.append("published", "1");
-      formData.append("postedtime", currentDateTime);
-      const response = await fetch("/api/sent-data", {
+      // formData.append("postedtime", currentDateTime);
+      const response = await fetch("/api/blog-table/sent-blog-data", {
         method: "POST",
         body: formData,
       });

@@ -74,12 +74,13 @@ const Read: FC = () => {
       }
 
       try {
-        const blogResponse = await fetch(`/api/single-blog?id=${id}`);
+        const blogResponse = await fetch(
+          `/api/blog-table/read-more-blog?id=${id}`
+        );
         if (!blogResponse.ok) {
           throw new Error("Failed to fetch blog data.");
         }
         const blogData = await blogResponse.json();
-        console.log(blogData, "blogData hamza");
         setSingleBlog(blogData.specificBlogResult[0]);
       } catch (error: any) {
         setError("Error fetching blog data.");

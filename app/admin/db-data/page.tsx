@@ -12,6 +12,8 @@ interface Blog {
   content: string;
   image: string;
   video: string;
+  image_name: string;
+  video_name: string;
   visibility: number;
   published: number;
   createdAt: string;
@@ -28,7 +30,9 @@ const Page: React.FC = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await fetch("../api/get-blogs/");
+        const response = await fetch(
+          "../api/blog-table/get-all-db-blog?allblog=allblog"
+        );
         if (!response.ok) {
           throw new Error("Error fetching all blogs from database.");
         }
@@ -46,7 +50,7 @@ const Page: React.FC = () => {
   const handleDelete = async (id: number) => {
     if (confirm("Do you want to delete this blog?")) {
       try {
-        const response = await fetch(`../api/delete-blogs?id=${id}`, {
+        const response = await fetch(`../api/blog-table/delete-blog?id=${id}`, {
           method: "DELETE",
         });
         if (response.ok) {
@@ -89,8 +93,8 @@ const Page: React.FC = () => {
                 <th>ID</th>
                 <th>Title</th>
                 <th>Content</th>
-                <th>Image</th>
-                <th>Video</th>
+                <th>Image_Name</th>
+                <th>Video_Name</th>
                 <th>Visibility</th>
                 <th>Publish</th>
                 <th>Time</th>
@@ -104,8 +108,8 @@ const Page: React.FC = () => {
                   <td>{blog.id}</td>
                   <td>{blog.title}</td>
                   <td>{blog.content}</td>
-                  <td>{blog.image}</td>
-                  <td>{blog.video}</td>
+                  <td>{blog.image_name}</td>
+                  <td>{blog.video_name}</td>
                   <td>{blog.visibility}</td>
                   <td>{blog.published}</td>
                   <td>{blog.postedtime}</td>

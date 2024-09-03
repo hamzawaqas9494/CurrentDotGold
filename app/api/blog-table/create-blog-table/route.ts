@@ -285,6 +285,9 @@ export const dynamic = "force-dynamic";
 
 async function allBlogsTable() {
   try {
+    // await sql.query(`
+    //   DROP TABLE IF EXISTS allblogs;
+    // `);
     await sql.query(`
       CREATE TABLE IF NOT EXISTS allblogs (
         id SERIAL PRIMARY KEY,
@@ -295,8 +298,8 @@ async function allBlogsTable() {
         video TEXT,
         video_name VARCHAR(255),
         visibility VARCHAR(50),
-        published BOOLEAN,
-        postedtime TIMESTAMP
+        published  VARCHAR(50),
+        postedtime  VARCHAR(50)
       );
     `);
     console.log("Table 'allblogs' created or already exists.");

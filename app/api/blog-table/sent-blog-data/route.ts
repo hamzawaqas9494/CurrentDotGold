@@ -518,16 +518,19 @@
 // }
 import { NextRequest, NextResponse } from "next/server";
 import { sql } from "@vercel/postgres";
+import Date from "../../../components/Home/Date&Time";
 
 export async function POST(request: NextRequest) {
   try {
+    let date = Date();
+    let currentdate = date.date;
     const formData = await request.formData();
 
     const title = formData.get("title") as string;
     const content = formData.get("content") as string;
     const visibility = formData.get("visibility") as string;
     const published = formData.get("published") as string;
-    const postedtime = formData.get("postedtime") as string;
+    // const postedtime = formData.get("postedtime") as string;
     const imageFile = formData.get("image") as File | null;
     const videoFile = formData.get("video") as File | null;
 
@@ -561,7 +564,7 @@ export async function POST(request: NextRequest) {
     // Insert data into the `allblogs` table, including image and video names
     const result = await sql`
       INSERT INTO allblogs (title, content, image, image_name, video, video_name, visibility, published, postedtime)
-      VALUES (${title}, ${content}, ${imageBase64}, ${imageName}, ${videoBase64}, ${videoName}, ${visibility}, ${published}, ${postedtime})
+      VALUES (${title}, ${content}, ${imageBase64}, ${imageName}, ${videoBase64}, ${videoName}, ${visibility}, ${published}, ${currentdate})
       RETURNING *;
     `;
 
