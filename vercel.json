@@ -3,10 +3,6 @@
     {
       "path": "/api/live-gold-rate/add-live-goldrate",
       "schedule": "16 * * * *"
-    },
-    {
-      "path": "/api/live-gold-rate/add-live-goldrate",
-      "schedule": "0 14 * * *"
     }
   ]
 }
