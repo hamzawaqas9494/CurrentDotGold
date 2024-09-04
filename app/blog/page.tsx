@@ -1044,11 +1044,7 @@ const Blog: React.FC = () => {
                   <p className="mt-10 text-center text-gray-400">
                     {blog.postedtime}
                   </p>
-                  <img
-                    className="mt-10"
-                    src={`data:image/jpeg;base64,${blog.image}`}
-                    alt="ring blog"
-                  />
+                  <img className="mt-10" src={blog.image} alt="ring blog" />
                   <p className="mt-10 overflow-hidden text-ellipsis content-box">
                     {blog.content}
                   </p>

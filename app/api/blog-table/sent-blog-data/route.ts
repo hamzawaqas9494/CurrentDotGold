@@ -531,9 +531,9 @@ export async function POST(request: NextRequest) {
     const visibility = formData.get("visibility") as string;
     const published = formData.get("published") as string;
     // const postedtime = formData.get("postedtime") as string;
-    const imageFile = formData.get("image") as File | null;
-    const videoFile = formData.get("video") as File | null;
-
+    const imageFile = formData.get("image") as string;
+    // const videoFile = formData.get("video") as File | null;
+    console.log(imageFile);
     // Validation for required fields
     if (!title || !content) {
       return NextResponse.json(
@@ -547,24 +547,24 @@ export async function POST(request: NextRequest) {
     let videoBase64 = null;
     let videoName = null;
 
-    // Convert image to Base64 and store its name
-    if (imageFile) {
-      const imageBuffer = Buffer.from(await imageFile.arrayBuffer());
-      imageBase64 = imageBuffer.toString("base64");
-      imageName = imageFile.name; // Store the image's name
-    }
+    // // Convert image to Base64 and store its name
+    // if (imageFile) {
+    //   const imageBuffer = Buffer.from(await imageFile.arrayBuffer());
+    //   imageBase64 = imageBuffer.toString("base64");
+    //   imageName = imageFile.name; // Store the image's name
+    // }
 
-    // Convert video to Base64 and store its name
-    if (videoFile) {
-      const videoBuffer = Buffer.from(await videoFile.arrayBuffer());
-      videoBase64 = videoBuffer.toString("base64");
-      videoName = videoFile.name; // Store the video's name
-    }
+    // // Convert video to Base64 and store its name
+    // if (videoFile) {
+    //   const videoBuffer = Buffer.from(await videoFile.arrayBuffer());
+    //   videoBase64 = videoBuffer.toString("base64");
+    //   videoName = videoFile.name; // Store the video's name
+    // }
 
     // Insert data into the `allblogs` table, including image and video names
     const result = await sql`
       INSERT INTO allblogs (title, content, image, image_name, video, video_name, visibility, published, postedtime)
-      VALUES (${title}, ${content}, ${imageBase64}, ${imageName}, ${videoBase64}, ${videoName}, ${visibility}, ${published}, ${currentdate})
+      VALUES (${title}, ${content}, ${imageFile}, ${imageName}, ${videoBase64}, ${videoName}, ${visibility}, ${published}, ${currentdate})
       RETURNING *;
     `;
 

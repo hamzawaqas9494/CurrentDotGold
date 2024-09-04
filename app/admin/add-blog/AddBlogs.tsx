@@ -457,7 +457,7 @@ const AddBlogs: FC = () => {
     try {
       const newBlob = await upload(file.name, file, {
         access: "public",
-        handleUploadUrl: "/api/avatar/upload",
+        handleUploadUrl: "../api/avatar/upload",
       });
       setImageBlob(newBlob);
     } catch (error) {
