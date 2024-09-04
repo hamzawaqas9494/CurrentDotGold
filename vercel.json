@@ -2,7 +2,7 @@
   "crons": [
     {
       "path": "/api/live-gold-rate/add-live-goldrate",
-      "schedule": "45 11 * * *"
+      "schedule": "46 11 * * *"
     }
   ]
 }
