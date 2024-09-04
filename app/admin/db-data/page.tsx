@@ -30,9 +30,7 @@ const Page: React.FC = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await fetch(
-          "../api/blog-table/get-all-db-blog?allblog=allblog"
-        );
+        const response = await fetch("../api/blog-table/get-all-db-blog");
         if (!response.ok) {
           throw new Error("Error fetching all blogs from database.");
         }
