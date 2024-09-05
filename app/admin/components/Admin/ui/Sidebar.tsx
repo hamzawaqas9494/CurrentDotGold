@@ -70,6 +70,12 @@ const sideNavigationbottom = [
     // icon: <MapPinIcon className={iconClass} />,
     icon: <img src="/assets/logout icon.svg" className={iconClass} />,
   },
+  {
+    name: "gallery",
+    href: "/admin/gallery",
+    // icon: <MapPinIcon className={iconClass} />,
+    icon: <img src="/assets/logout icon.svg" className={iconClass} />,
+  },
 ];
 
 interface SidebarProps {
