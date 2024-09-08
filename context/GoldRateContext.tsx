@@ -60,11 +60,11 @@ export const GoldRateProvider: React.FC<GoldRateProviderProps> = ({
     // Fetch the latest rate on component mount
     fetchLatestRate();
 
-    // // Set up polling to fetch the latest rate every 5 minutes (300000 ms)
-    // const intervalId = setInterval(fetchLatestRate, 300000);
+    // Set up polling to fetch the latest rate every 5 minutes (300000 ms)
+    const intervalId = setInterval(fetchLatestRate, 300000);
 
-    // // Clear the interval when the component unmounts
-    // return () => clearInterval(intervalId);
+    // Clear the interval when the component unmounts
+    return () => clearInterval(intervalId);
   }, []);
 
   return (
