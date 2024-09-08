@@ -690,7 +690,7 @@
 import { apiBaseUrl } from "@/context/constants";
 import { sql } from "@vercel/postgres";
 import { NextResponse } from "next/server";
-// export const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic";
 
 async function fetchRates() {
   try {
