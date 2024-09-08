@@ -789,57 +789,11 @@ export async function GET() {
   }
 }
 
-// import { WebSocketServer } from "ws";
-// import { sql } from "@vercel/postgres";
-// import fetch from "node-fetch";
 // import { apiBaseUrl } from "@/context/constants";
+// import { sql } from "@vercel/postgres";
 // import { NextResponse } from "next/server";
 // export const dynamic = "force-dynamic";
 
-// const wss = new WebSocketServer({ port: 8080 });
-
-// wss.on("connection", async (ws) => {
-//   console.log("Client connected");
-
-//   // Send the latest rates immediately after connection
-//   const latestRates = await getLatestRatesFromDatabase();
-//   ws.send(JSON.stringify(latestRates));
-
-//   // Check for updates periodically
-//   setInterval(async () => {
-//     const rates = await fetchRates();
-
-//     const latestRates = await getLatestRatesFromDatabase();
-
-//     if (
-//       !latestRates ||
-//       latestRates.gold_rate_usd !== rates.goldRateUsd ||
-//       latestRates.gold_rate_pkr !== rates.goldRatePkr ||
-//       latestRates.silver_rate_usd !== rates.silverRateUsd ||
-//       latestRates.silver_rate_pkr !== rates.silverRatePkr
-//     ) {
-//       await storeRatesInDatabase(
-//         rates.goldRateUsd,
-//         rates.goldRatePkr,
-//         rates.silverRateUsd,
-//         rates.silverRatePkr
-//       );
-
-//       // Broadcast the new rates to all connected clients
-//       wss.clients.forEach((client) => {
-//         if (client.readyState === WebSocket.OPEN) {
-//           client.send(JSON.stringify(rates));
-//         }
-//       });
-//     }
-//   }, 5000); // Checking every 5 seconds
-
-//   ws.on("close", () => {
-//     console.log("Client disconnected");
-//   });
-// });
-
-// // Reuse your functions from the original code for fetching and storing rates
 // async function fetchRates() {
 //   try {
 //     const response = await fetch(`${apiBaseUrl}`, {
@@ -849,19 +803,17 @@ export async function GET() {
 //         Pragma: "no-cache",
 //         Expires: "0",
 //       },
-//       // cache: "no-store",
+//       cache: "no-store",
 //     });
 
 //     if (!response.ok) {
 //       throw new Error(`API Error: ${response.status} - ${response.statusText}`);
 //     }
-//     const data: any = await response.json();
-//     const goldRateUsd = parseFloat(data.rates.USDXAU || "0");
-//     const silverRateUsd = parseFloat(data.rates.USDXAG || "0");
-//     const dollarInPkr = parseFloat(data.rates.PKR || "0");
-//     const goldRatePkr = goldRateUsd * dollarInPkr;
-//     const silverRatePkr = silverRateUsd * dollarInPkr;
-//     return { goldRateUsd, goldRatePkr, silverRateUsd, silverRatePkr };
+//     const data = await response.json();
+//     const goldRate = parseFloat(data.rates.PKRXAU || "0");
+//     const silverRate = parseFloat(data.rates.PKRXAG || "0");
+
+//     return { goldRate, silverRate };
 //   } catch (error) {
 //     throw new Error("Error fetching rates");
 //   }
@@ -870,7 +822,7 @@ export async function GET() {
 // async function getLatestRatesFromDatabase() {
 //   try {
 //     const result =
-//       await sql`SELECT gold_rate_usd, gold_rate_pkr, silver_rate_usd, silver_rate_pkr FROM rates ORDER BY date DESC LIMIT 1;`;
+//       await sql`SELECT gold_rate, silver_rate FROM rates ORDER BY date DESC LIMIT 1;`;
 //     if (result.rows.length === 0) {
 //       return null;
 //     }
@@ -880,18 +832,53 @@ export async function GET() {
 //   }
 // }
 
-// async function storeRatesInDatabase(
-//   goldRateUsd: number,
-//   goldRatePkr: number,
-//   silverRateUsd: number,
-//   silverRatePkr: number
-// ) {
+// async function storeRatesInDatabase(goldRate: number, silverRate: number) {
 //   try {
 //     await sql`
-//       INSERT INTO rates (gold_rate_usd, gold_rate_pkr, silver_rate_usd, silver_rate_pkr, date)
-//       VALUES (${goldRateUsd}, ${goldRatePkr}, ${silverRateUsd}, ${silverRatePkr}, NOW());
+//       INSERT INTO rates (gold_rate, silver_rate, date)
+//       VALUES (${goldRate}, ${silverRate}, NOW());
 //     `;
 //   } catch (error) {
 //     throw new Error("Error storing rates in database");
+//   }
+// }
+
+// export async function GET() {
+//   try {
+//     const { goldRate, silverRate } = await fetchRates();
+//     console.log(
+//       goldRate,
+//       silverRate,
+//       "Hit Route With CronJob and Get New Rates in Tory Ounce From API"
+//     );
+//     const latestRates = await getLatestRatesFromDatabase();
+//     if (
+//       !latestRates ||
+//       latestRates.gold_rate !== goldRate ||
+//       latestRates.silver_rate !== silverRate
+//     ) {
+//       console.log("Rates fetched and updated in database successfully.");
+//       await storeRatesInDatabase(goldRate, silverRate);
+//       return NextResponse.json(
+//         { message: "Rates fetched and updated in database successfully." },
+//         { status: 200 }
+//       );
+//     } else {
+//       console.log(
+//         "Rates fetched but no changes detected, No update to the database."
+//       );
+//       return NextResponse.json(
+//         {
+//           message:
+//             "Rates fetched but no changes detected, No update to the database.",
+//         },
+//         { status: 200 }
+//       );
+//     }
+//   } catch (error: any) {
+//     return NextResponse.json(
+//       { error: `Failed to process request: ${error.message}` },
+//       { status: 500 }
+//     );
 //   }
 // }
