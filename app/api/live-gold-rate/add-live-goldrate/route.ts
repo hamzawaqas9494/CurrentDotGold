@@ -687,108 +687,6 @@
 // //   }
 // // }
 
-// import { apiBaseUrl } from "@/context/constants";
-// import { sql } from "@vercel/postgres";
-// import { NextResponse } from "next/server";
-// export const dynamic = "force-dynamic";
-
-// async function fetchRates() {
-//   try {
-//     const response = await fetch(`${apiBaseUrl}`, {
-//       method: "GET",
-//       headers: {
-//         "Cache-Control": "no-cache",
-//         Pragma: "no-cache",
-//         Expires: "0",
-//       },
-//       cache: "no-store",
-//     });
-
-//     if (!response.ok) {
-//       throw new Error(`API Error: ${response.status} - ${response.statusText}`);
-//     }
-//     const data = await response.json();
-//     const goldRateUsd = parseFloat(data.rates.USDXAU || "0");
-//     const silverRateUsd = parseFloat(data.rates.USDXAG || "0");
-//     const dollarInPkr = parseFloat(data.rates.PKR || "0");
-//     const goldRatePkr = goldRateUsd * dollarInPkr;
-//     const silverRatePkr = silverRateUsd * dollarInPkr;
-//     return { goldRateUsd, goldRatePkr, silverRateUsd, silverRatePkr };
-//   } catch (error) {
-//     throw new Error("Error fetching rates");
-//   }
-// }
-
-// async function getLatestRatesFromDatabase() {
-//   try {
-//     const result =
-//       await sql`SELECT gold_rate_usd, gold_rate_pkr, silver_rate_usd, silver_rate_pkr FROM rates ORDER BY date DESC LIMIT 1;`;
-//     if (result.rows.length === 0) {
-//       return null;
-//     }
-//     return result.rows[0];
-//   } catch (error) {
-//     throw new Error("Error fetching latest rates from database");
-//   }
-// }
-
-// async function storeRatesInDatabase(
-//   goldRateUsd: number,
-//   goldRatePkr: number,
-//   silverRateUsd: number,
-//   silverRatePkr: number
-// ) {
-//   try {
-//     await sql`
-//       INSERT INTO rates (gold_rate_usd, gold_rate_pkr, silver_rate_usd, silver_rate_pkr, date)
-//       VALUES (${goldRateUsd}, ${goldRatePkr}, ${silverRateUsd}, ${silverRatePkr}, NOW());
-//     `;
-//   } catch (error) {
-//     throw new Error("Error storing rates in database");
-//   }
-// }
-
-// export async function GET() {
-//   try {
-//     const { goldRateUsd, goldRatePkr, silverRateUsd, silverRatePkr } =
-//       await fetchRates();
-
-//     const latestRates = await getLatestRatesFromDatabase();
-
-//     if (
-//       !latestRates ||
-//       latestRates.gold_rate_usd !== goldRateUsd ||
-//       latestRates.gold_rate_pkr !== goldRatePkr ||
-//       latestRates.silver_rate_usd !== silverRateUsd ||
-//       latestRates.silver_rate_pkr !== silverRatePkr
-//     ) {
-//       await storeRatesInDatabase(
-//         goldRateUsd,
-//         goldRatePkr,
-//         silverRateUsd,
-//         silverRatePkr
-//       );
-//       return NextResponse.json(
-//         { message: "Rates fetched and updated in database successfully." },
-//         { status: 200 }
-//       );
-//     } else {
-//       return NextResponse.json(
-//         {
-//           message:
-//             "Rates fetched but no changes detected, No update to the database.",
-//         },
-//         { status: 200 }
-//       );
-//     }
-//   } catch (error: any) {
-//     return NextResponse.json(
-//       { error: `Failed to process request: ${error.message}` },
-//       { status: 500 }
-//     );
-//   }
-// }
-
 import { apiBaseUrl } from "@/context/constants";
 import { sql } from "@vercel/postgres";
 import { NextResponse } from "next/server";
@@ -810,19 +708,79 @@ async function fetchRates() {
       throw new Error(`API Error: ${response.status} - ${response.statusText}`);
     }
     const data = await response.json();
-    console.log(data, "response");
+    const goldRateUsd = parseFloat(data.rates.USDXAU || "0");
+    const silverRateUsd = parseFloat(data.rates.USDXAG || "0");
+    const dollarInPkr = parseFloat(data.rates.PKR || "0");
+    const goldRatePkr = goldRateUsd * dollarInPkr;
+    const silverRatePkr = silverRateUsd * dollarInPkr;
+    return { goldRateUsd, goldRatePkr, silverRateUsd, silverRatePkr };
   } catch (error) {
     throw new Error("Error fetching rates");
   }
 }
 
+async function getLatestRatesFromDatabase() {
+  try {
+    const result =
+      await sql`SELECT gold_rate_usd, gold_rate_pkr, silver_rate_usd, silver_rate_pkr FROM rates ORDER BY date DESC LIMIT 1;`;
+    if (result.rows.length === 0) {
+      return null;
+    }
+    return result.rows[0];
+  } catch (error) {
+    throw new Error("Error fetching latest rates from database");
+  }
+}
+
+async function storeRatesInDatabase(
+  goldRateUsd: number,
+  goldRatePkr: number,
+  silverRateUsd: number,
+  silverRatePkr: number
+) {
+  try {
+    await sql`
+      INSERT INTO rates (gold_rate_usd, gold_rate_pkr, silver_rate_usd, silver_rate_pkr, date)
+      VALUES (${goldRateUsd}, ${goldRatePkr}, ${silverRateUsd}, ${silverRatePkr}, NOW());
+    `;
+  } catch (error) {
+    throw new Error("Error storing rates in database");
+  }
+}
+
 export async function GET() {
   try {
-    fetchRates();
-    return NextResponse.json(
-      { message: "Rates fetched and updated in database successfully." },
-      { status: 200 }
-    );
+    const { goldRateUsd, goldRatePkr, silverRateUsd, silverRatePkr } =
+      await fetchRates();
+
+    const latestRates = await getLatestRatesFromDatabase();
+
+    if (
+      !latestRates ||
+      latestRates.gold_rate_usd !== goldRateUsd ||
+      latestRates.gold_rate_pkr !== goldRatePkr ||
+      latestRates.silver_rate_usd !== silverRateUsd ||
+      latestRates.silver_rate_pkr !== silverRatePkr
+    ) {
+      await storeRatesInDatabase(
+        goldRateUsd,
+        goldRatePkr,
+        silverRateUsd,
+        silverRatePkr
+      );
+      return NextResponse.json(
+        { message: "Rates fetched and updated in database successfully." },
+        { status: 200 }
+      );
+    } else {
+      return NextResponse.json(
+        {
+          message:
+            "Rates fetched but no changes detected, No update to the database.",
+        },
+        { status: 200 }
+      );
+    }
   } catch (error: any) {
     return NextResponse.json(
       { error: `Failed to process request: ${error.message}` },
