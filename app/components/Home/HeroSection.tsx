@@ -12,26 +12,49 @@ interface UnitPrices {
 }
 
 const HeroSection: FC = () => {
-  const { todayRate, isLoading, error } = useGoldRate();
+  const { todayRateusd, todayRatepkr, yesterdayRate, isLoading, error } =
+    useGoldRate();
+
   const [totalPrice, setTotalPrice] = useState<number>(0);
-  console.log(todayRate, "todayRate hamza ");
+  // console.log(todayRate, "todayRate hamza ");
+  // const goldRates = useMemo(() => {
+  //   return [
+  //     // Gold rates in Tola
+  //     { units: Units.Tola, purity: 24, rate: todayRate * 0.375 },
+  //     {
+  //       units: Units.Tola,
+  //       purity: 22,
+  //       rate: (0.916 * 11.663 * todayRate) / 31.1,
+  //     },
+  //     {
+  //       units: Units.Tola,
+  //       purity: 21,
+  //       rate: (0.875 * 11.663 * todayRate) / 31.1,
+  //     },
+  //   ];
+  // }, [todayRate]);
   const goldRates = useMemo(() => {
     return [
-      // Gold rates in Tola
-      { units: Units.Tola, purity: 24, rate: todayRate * 0.375 },
+      {
+        units: Units.Tola,
+        purity: 24,
+        rateUSD: todayRateusd * 0.375,
+        ratePKR: todayRatepkr * 0.375,
+      },
       {
         units: Units.Tola,
         purity: 22,
-        rate: (0.916 * 11.663 * todayRate) / 31.1,
+        rateUSD: (0.916 * 11.663 * todayRateusd) / 31.1,
+        ratePKR: (0.916 * 11.663 * todayRatepkr) / 31.1,
       },
       {
         units: Units.Tola,
         purity: 21,
-        rate: (0.875 * 11.663 * todayRate) / 31.1,
+        rateUSD: (0.875 * 11.663 * todayRateusd) / 31.1,
+        ratePKR: (0.875 * 11.663 * todayRatepkr) / 31.1,
       },
     ];
-  }, [todayRate]);
-
+  }, [todayRateusd, todayRatepkr]);
   return (
     <header className="hero-sec relative h-[calc(100vh_-_50vh)] md:h-[calc(100vh_-_20vh)] bg-[url('/assets/hero.png')] bg-cover bg-center bg-no-repeat">
       <div className="absolute inset-0 flex  flex-col items-center justify-between bg-black/70">
@@ -48,18 +71,28 @@ const HeroSection: FC = () => {
             {isLoading ? (
               <Loader />
             ) : (
-              goldRates.map((rate, index) => (
-                <div
-                  key={index}
-                  className="flex flex-col items-center space-y-1 md:space-y-4 text-white"
-                >
-                  <p className="text-xs md:text-4xl font-bold">
-                    {rate.rate.toFixed(2)} <span className="text-sm">PKR</span>
-                  </p>
-                  <Polygon />
-                  Purity: {rate.purity}
-                </div>
-              ))
+              goldRates.map(
+                (rate, index) => (
+                  console.log(rate, "hamza"),
+                  (
+                    <div
+                      key={index}
+                      className="flex flex-col items-center space-y-1 md:space-y-4 text-white"
+                    >
+                      <p className="text-xs md:text-4xl font-bold">
+                        {rate.rateUSD.toFixed(2)}{" "}
+                        <span className="text-sm">USD</span>
+                      </p>
+                      <p className="text-xs md:text-4xl font-bold">
+                        {rate.ratePKR.toFixed(2)}{" "}
+                        <span className="text-sm">PKR</span>
+                      </p>
+                      <Polygon />
+                      Purity: {rate.purity}
+                    </div>
+                  )
+                )
+              )
             )}
           </div>
 

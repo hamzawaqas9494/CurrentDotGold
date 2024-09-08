@@ -3,12 +3,20 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 
 // Context to provide the gold rate data
 const GoldRateContext = createContext<{
-  todayRate: number;
+  todayRateusd: number;
+  todayRatepkr: number;
+  todayRateInr: number;
+  todayRateGbp: number;
+  todayRateAed: number;
   yesterdayRate: number;
   isLoading: boolean;
   error: string | null;
 }>({
-  todayRate: 0,
+  todayRateusd: 0,
+  todayRatepkr: 0,
+  todayRateInr: 0,
+  todayRateGbp: 0,
+  todayRateAed: 0,
   yesterdayRate: 0,
   isLoading: true,
   error: null,
@@ -23,7 +31,12 @@ type GoldRateProviderProps = {
 export const GoldRateProvider: React.FC<GoldRateProviderProps> = ({
   children,
 }) => {
-  const [todayRate, setTodayRate] = useState<number>(0);
+  const [todayRateusd, setTodayRateusd] = useState<number>(0);
+  const [todayRatepkr, setTodayRatepkr] = useState<number>(0);
+  const [todayRateInr, setTodayRateInr] = useState<number>(0);
+  const [todayRateGbp, setTodayRateGbp] = useState<number>(0);
+  const [todayRateAed, setTodayRateAed] = useState<number>(0);
+
   const [yesterdayRate, setYesterdayRate] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -31,10 +44,10 @@ export const GoldRateProvider: React.FC<GoldRateProviderProps> = ({
     try {
       const response = await fetch("/api/live-gold-rate/latest-live-goldrate");
       const data = await response.json();
-      console.log(data, "db gold rate");
       if (response.ok) {
-        setTodayRate(data.latestRate.gold_rate);
-        setYesterdayRate(data.secondLatestRate.gold_rate);
+        setTodayRateusd(data.latestRate.gold_rate_usd);
+        setTodayRatepkr(data.latestRate.gold_rate_pkr);
+        setYesterdayRate(data.secondLatestRate.gold_rate_pkr);
         setIsLoading(false);
         setError(null);
       }
@@ -49,7 +62,16 @@ export const GoldRateProvider: React.FC<GoldRateProviderProps> = ({
 
   return (
     <GoldRateContext.Provider
-      value={{ todayRate, yesterdayRate, isLoading, error }}
+      value={{
+        todayRateusd,
+        todayRatepkr,
+        todayRateInr,
+        todayRateGbp,
+        todayRateAed,
+        yesterdayRate,
+        isLoading,
+        error,
+      }}
     >
       {children}
     </GoldRateContext.Provider>

@@ -7,26 +7,26 @@
 // import { Loader } from "@/app/ui";
 
 // const GoldRatesGeneral: FC = () => {
-//   const { todayRate, yesterdayRate, isLoading, error } = useGoldRate();
+//   const { todayRatepkr, yesterdayRate, isLoading, error } = useGoldRate();
 //   const [activeTab, setActiveTab] = useState("tab1");
 
 //   // Define the gold rates for different purities
 //   const goldRates = useMemo(
 //     () => ({
 //       24: {
-//         gram: todayRate / 31.1,
+//         gram: todayRatepkr / 31.1,
 //         gramprev: yesterdayRate / 31.1,
 //       },
 //       22: {
-//         gram: (0.916666 * 11.6638 * todayRate) / 31.1 / 11.6638,
+//         gram: (0.916666 * 11.6638 * todayRatepkr) / 31.1 / 11.6638,
 //         gramprev: (0.916666 * 11.6638 * yesterdayRate) / 31.1 / 11.6638,
 //       },
 //       21: {
-//         gram: (0.8750 * 11.6638 * todayRate) / 31.1 / 11.6638,
+//         gram: (0.8750 * 11.6638 * todayRatepkr) / 31.1 / 11.6638,
 //         gramprev: (0.8750 * 11.6638 * yesterdayRate) / 31.1 / 11.6638,
 //       },
 //     }),
-//     [todayRate]
+//     [todayRatepkr]
 //   );
 
 //   return (
@@ -211,26 +211,26 @@
 // import { Loader } from "@/app/ui";
 
 // const GoldRatesGeneral: FC = () => {
-//   const { todayRate, yesterdayRate, isLoading, error } = useGoldRate();
+//   const { todayRatepkr, yesterdayRate, isLoading, error } = useGoldRate();
 //   const [activeTab, setActiveTab] = useState("tab1");
 
 //   // Define the gold rates for different purities
 //   const goldRates = useMemo(
 //     () => ({
 //       24: {
-//         gram: todayRate / 31.1,
+//         gram: todayRatepkr / 31.1,
 //         gramprev: yesterdayRate / 31.1,
 //       },
 //       22: {
-//         gram: (0.916666 * 11.6638 * todayRate) / 31.1 / 11.6638,
+//         gram: (0.916666 * 11.6638 * todayRatepkr) / 31.1 / 11.6638,
 //         gramprev: (0.916666 * 11.6638 * yesterdayRate) / 31.1 / 11.6638,
 //       },
 //       21: {
-//         gram: (0.8750 * 11.6638 * todayRate) / 31.1 / 11.6638,
+//         gram: (0.8750 * 11.6638 * todayRatepkr) / 31.1 / 11.6638,
 //         gramprev: (0.8750 * 11.6638 * yesterdayRate) / 31.1 / 11.6638,
 //       },
 //     }),
-//     [todayRate, yesterdayRate]
+//     [todayRatepkr, yesterdayRate]
 //   );
 
 //   const calculateChange = (gram: number, gramprev: number) => {
@@ -558,26 +558,27 @@ import { RedArrow, GreenArrow } from "@/icons";
 import { Loader } from "@/app/ui";
 
 const GoldRatesGeneral: FC = () => {
-  const { todayRate, yesterdayRate, isLoading, error } = useGoldRate();
+  const { todayRateusd, todayRatepkr, yesterdayRate, isLoading, error } =
+    useGoldRate();
   const [activeTab, setActiveTab] = useState("tab1");
 
   // Define the gold rates for different purities
   const goldRates = useMemo(
     () => ({
       24: {
-        gram: todayRate / 31.1,
+        gram: todayRatepkr / 31.1,
         gramprev: yesterdayRate / 31.1,
       },
       22: {
-        gram: (0.9166 * 11.6638 * todayRate) / 31.1 / 11.6638,
+        gram: (0.9166 * 11.6638 * todayRatepkr) / 31.1 / 11.6638,
         gramprev: (0.9166 * 11.6638 * yesterdayRate) / 31.1 / 11.6638,
       },
       21: {
-        gram: (0.875 * 11.6638 * todayRate) / 31.1 / 11.6638,
+        gram: (0.875 * 11.6638 * todayRatepkr) / 31.1 / 11.6638,
         gramprev: (0.875 * 11.6638 * yesterdayRate) / 31.1 / 11.6638,
       },
     }),
-    [todayRate, yesterdayRate]
+    [todayRatepkr, yesterdayRate]
   );
 
   const calculateChange = (gram: number, gramprev: number) => {

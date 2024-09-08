@@ -9,15 +9,16 @@ import { CityPrices } from "@/common.types";
 import { cities } from "@/app/constants";
 
 const GoldRatesPak: FC = () => {
-  const { todayRate, isLoading, error } = useGoldRate();
+  const { todayRateusd, todayRatepkr, yesterdayRate, isLoading, error } =
+    useGoldRate();
 
   const [activeTab, setActiveTab] = useState("tab1");
   const [goldPrices, setGoldPrices] = useState<CityPrices>({});
 
-  const gramRate = todayRate / 31.1;
+  const gramRate = todayRatepkr / 31.1;
 
   useEffect(() => {
-    if (todayRate !== null) {
+    if (todayRatepkr !== null) {
       // Calculate dynamic gold prices based on today's rate
       const generateRandomPrice = (min: number, max: number) =>
         Math.floor(Math.random() * (max - min + 1)) + min;
@@ -31,7 +32,7 @@ const GoldRatesPak: FC = () => {
         sialkot: generateRandomPrice(500, 1000) + gramRate,
       });
     }
-  }, [todayRate]);
+  }, [todayRatepkr]);
 
   return (
     <section className="bg-[#F9F9F9] py-10 sm:py-14 px-2 md:px-0">

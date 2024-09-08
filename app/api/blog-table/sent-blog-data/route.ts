@@ -533,7 +533,7 @@ export async function POST(request: NextRequest) {
     // const postedtime = formData.get("postedtime") as string;
     const imageFile = formData.get("image") as string;
     // const videoFile = formData.get("video") as File | null;
-    console.log(imageFile);
+    console.log(imageFile, "hamza");
     // Validation for required fields
     if (!title || !content) {
       return NextResponse.json(
@@ -542,10 +542,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    let imageBase64 = null;
-    let imageName = null;
-    let videoBase64 = null;
-    let videoName = null;
+    // let imageBase64 = null;
+    // let imageName = null;
+    // let videoBase64 = null;
+    // let videoName = null;
 
     // // Convert image to Base64 and store its name
     // if (imageFile) {
@@ -563,8 +563,8 @@ export async function POST(request: NextRequest) {
 
     // Insert data into the `allblogs` table, including image and video names
     const result = await sql`
-      INSERT INTO allblogs (title, content, image, image_name, video, video_name, visibility, published, postedtime)
-      VALUES (${title}, ${content}, ${imageFile}, ${imageName}, ${videoBase64}, ${videoName}, ${visibility}, ${published}, ${currentdate})
+      INSERT INTO allblogs (title, content, image, visibility, published, postedtime)
+      VALUES (${title}, ${content}, ${imageFile}, ${visibility}, ${published}, ${currentdate})
       RETURNING *;
     `;
 
