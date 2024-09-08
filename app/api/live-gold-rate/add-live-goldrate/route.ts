@@ -810,71 +810,19 @@ async function fetchRates() {
       throw new Error(`API Error: ${response.status} - ${response.statusText}`);
     }
     const data = await response.json();
-    const goldRate = parseFloat(data.rates.PKRXAU || "0");
-    const silverRate = parseFloat(data.rates.PKRXAG || "0");
-
-    return { goldRate, silverRate };
+    console.log(data, "response");
   } catch (error) {
     throw new Error("Error fetching rates");
   }
 }
 
-async function getLatestRatesFromDatabase() {
-  try {
-    const result =
-      await sql`SELECT gold_rate, silver_rate FROM rates ORDER BY date DESC LIMIT 1;`;
-    if (result.rows.length === 0) {
-      return null;
-    }
-    return result.rows[0];
-  } catch (error) {
-    throw new Error("Error fetching latest rates from database");
-  }
-}
-
-async function storeRatesInDatabase(goldRate: number, silverRate: number) {
-  try {
-    await sql`
-      INSERT INTO rates (gold_rate, silver_rate, date)
-      VALUES (${goldRate}, ${silverRate}, NOW());
-    `;
-  } catch (error) {
-    throw new Error("Error storing rates in database");
-  }
-}
-
 export async function GET() {
   try {
-    const { goldRate, silverRate } = await fetchRates();
-    console.log(
-      goldRate,
-      silverRate,
-      "Hit Route With CronJob and Get New Rates in Tory Ounce From API"
+    fetchRates();
+    return NextResponse.json(
+      { message: "Rates fetched and updated in database successfully." },
+      { status: 200 }
     );
-    const latestRates = await getLatestRatesFromDatabase();
-    if (
-      !latestRates ||
-      latestRates.gold_rate !== goldRate ||
-      latestRates.silver_rate !== silverRate
-    ) {
-      console.log("Rates fetched and updated in database successfully.");
-      await storeRatesInDatabase(goldRate, silverRate);
-      return NextResponse.json(
-        { message: "Rates fetched and updated in database successfully." },
-        { status: 200 }
-      );
-    } else {
-      console.log(
-        "Rates fetched but no changes detected, No update to the database."
-      );
-      return NextResponse.json(
-        {
-          message:
-            "Rates fetched but no changes detected, No update to the database.",
-        },
-        { status: 200 }
-      );
-    }
   } catch (error: any) {
     return NextResponse.json(
       { error: `Failed to process request: ${error.message}` },
