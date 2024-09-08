@@ -34,6 +34,7 @@
     "import": "^0.0.6",
     "multer": "^1.4.5-lts.1",
     "next": "^13.4.13",
+    "node-fetch": "^3.3.2",
     "nprogress": "^0.2.0",
     "postcss": "8.4.27",
     "postcss-import": "^15.1.0",
@@ -47,11 +48,14 @@
     "react-quill": "^2.0.0",
     "react-responsive-carousel": "^3.2.23",
     "tailwindcss": "3.3.3",
-    "typescript": "5.1.6"
+    "typescript": "5.1.6",
+    "ws": "^8.18.0"
   },
   "devDependencies": {
     "@types/busboy": "^1.5.4",
     "@types/formidable": "^3.4.5",
-    "@types/multer": "^1.4.11"
+    "@types/multer": "^1.4.11",
+    "@types/node-fetch": "^2.6.11",
+    "@types/ws": "^8.5.12"
   }
 }
