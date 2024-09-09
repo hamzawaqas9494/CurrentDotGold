@@ -975,15 +975,16 @@ interface GoldRate {
 }
 
 // Define the type for the countries object keys
-type Country = "Pakistan" | "India" | "USA" | "UK" | "UAE";
+type Country = "Pakistan" | "India" | "USA" | "SR" | "UAE";
 
 const GoldCalculator: FC = () => {
   const {
-    todayRateusd,
-    todayRateInr,
     todayRatepkr,
-    todayRateGbp,
+    todayRateusd,
+    todayRateSar,
+    todayRateInr,
     todayRateAed,
+    yesterdayRate,
     isLoading,
     error,
   } = useGoldRate();
@@ -998,9 +999,9 @@ const GoldCalculator: FC = () => {
   const countries: Record<Country, { rate: number; currency: string }> = {
     Pakistan: { rate: todayRatepkr, currency: "PKR" },
     USA: { rate: todayRateusd, currency: "USD" },
-    India: { rate: todayRateInr, currency: "INR" },
-    UK: { rate: todayRateGbp, currency: "GBP" },
+    SR: { rate: todayRateSar, currency: "GBP" },
     UAE: { rate: todayRateAed, currency: "AED" },
+    India: { rate: todayRateInr, currency: "INR" },
   };
 
   // Extract the current country's rate and currency

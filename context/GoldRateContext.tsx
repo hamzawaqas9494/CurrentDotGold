@@ -6,7 +6,7 @@ const GoldRateContext = createContext<{
   todayRateusd: number;
   todayRatepkr: number;
   todayRateInr: number;
-  todayRateGbp: number;
+  todayRateSar: number;
   todayRateAed: number;
   yesterdayRate: number;
   isLoading: boolean;
@@ -15,7 +15,7 @@ const GoldRateContext = createContext<{
   todayRateusd: 0,
   todayRatepkr: 0,
   todayRateInr: 0,
-  todayRateGbp: 0,
+  todayRateSar: 0,
   todayRateAed: 0,
   yesterdayRate: 0,
   isLoading: true,
@@ -31,12 +31,11 @@ type GoldRateProviderProps = {
 export const GoldRateProvider: React.FC<GoldRateProviderProps> = ({
   children,
 }) => {
-  const [todayRateusd, setTodayRateusd] = useState<number>(0);
   const [todayRatepkr, setTodayRatepkr] = useState<number>(0);
-  const [todayRateInr, setTodayRateInr] = useState<number>(0);
-  const [todayRateGbp, setTodayRateGbp] = useState<number>(0);
+  const [todayRateusd, setTodayRateusd] = useState<number>(0);
+  const [todayRateSar, setTodayRateSar] = useState<number>(0);
   const [todayRateAed, setTodayRateAed] = useState<number>(0);
-
+  const [todayRateInr, setTodayRateInr] = useState<number>(0);
   const [yesterdayRate, setYesterdayRate] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -45,8 +44,12 @@ export const GoldRateProvider: React.FC<GoldRateProviderProps> = ({
       const response = await fetch("/api/live-gold-rate/latest-live-goldrate");
       const data = await response.json();
       if (response.ok) {
-        setTodayRateusd(data.latestRate.gold_rate_usd);
         setTodayRatepkr(data.latestRate.gold_rate_pkr);
+        setTodayRateusd(data.latestRate.gold_rate_usd);
+        setTodayRateSar(data.latestRate.gold_rate_sar);
+        setTodayRateAed(data.latestRate.gold_rate_uae);
+        setTodayRateInr(data.latestRate.gold_rate_inr);
+
         setYesterdayRate(data.secondLatestRate.gold_rate_pkr);
         setIsLoading(false);
         setError(null);
@@ -72,9 +75,9 @@ export const GoldRateProvider: React.FC<GoldRateProviderProps> = ({
       value={{
         todayRateusd,
         todayRatepkr,
-        todayRateInr,
-        todayRateGbp,
+        todayRateSar,
         todayRateAed,
+        todayRateInr,
         yesterdayRate,
         isLoading,
         error,

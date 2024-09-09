@@ -1105,16 +1105,19 @@ async function fetchRates() {
       throw new Error(`API Error: ${response.status} - ${response.statusText}`);
     }
     const data = await response.json();
-    console.log(data, "with new api");
 
-    const goldRateUsd = parseFloat(data.rates.USDXAU || "0");
-    const silverRateUsd = parseFloat(data.rates.USDXAG || "0");
-    const dollarInPkr = parseFloat(data.rates.PKR || "0");
+    const goldRatePkr = parseFloat(data.metals.gold || "0");
+    const dollar_In_Pkr = parseFloat(data.currencies.USD || "0");
+    const Sar_In_Pkr = parseFloat(data.currencies.SAR || "0");
+    const Uae_In_Pkr = parseFloat(data.currencies.AED || "0");
+    const inr_In_pkr = parseFloat(data.currencies.INR || "0");
+    // goldrate in different country
+    const goldRateUsd = goldRatePkr / dollar_In_Pkr;
+    const goldRateSar = goldRatePkr / Sar_In_Pkr;
+    const goldRateUae = goldRatePkr / Uae_In_Pkr;
+    const goldRateInr = goldRatePkr / inr_In_pkr;
 
-    const goldRatePkr = goldRateUsd * dollarInPkr;
-    const silverRatePkr = silverRateUsd * dollarInPkr;
-
-    return { goldRateUsd, goldRatePkr, silverRateUsd, silverRatePkr };
+    return { goldRatePkr, goldRateUsd, goldRateSar, goldRateUae, goldRateInr };
   } catch (error) {
     throw new Error("Error fetching rates");
   }
@@ -1123,7 +1126,7 @@ async function fetchRates() {
 async function getLatestRatesFromDatabase() {
   try {
     const result =
-      await sql`SELECT gold_rate_usd, gold_rate_pkr, silver_rate_usd, silver_rate_pkr FROM rates ORDER BY date DESC LIMIT 1;`;
+      await sql`SELECT gold_rate_PKR,gold_rate_USD,gold_rate_SAR,gold_rate_UAE,gold_rate_INR FROM rates ORDER BY date DESC LIMIT 1;`;
 
     if (result.rows.length === 0) {
       return null;
@@ -1135,15 +1138,16 @@ async function getLatestRatesFromDatabase() {
 }
 
 async function storeRatesInDatabase(
-  goldRateUsd: number,
   goldRatePkr: number,
-  silverRateUsd: number,
-  silverRatePkr: number
+  goldRateUsd: number,
+  goldRateSar: number,
+  goldRateUae: number,
+  goldRateInr: number
 ) {
   try {
     await sql`
-      INSERT INTO rates (gold_rate_usd, gold_rate_pkr, silver_rate_usd, silver_rate_pkr, date)
-      VALUES (${goldRateUsd}, ${goldRatePkr}, ${silverRateUsd}, ${silverRatePkr}, NOW());
+      INSERT INTO rates (gold_rate_PKR,gold_rate_USD,gold_rate_SAR,gold_rate_UAE,gold_rate_INR,date)
+      VALUES (${goldRatePkr},${goldRateUsd},${goldRateSar},${goldRateUae},${goldRateInr},  NOW());
     `;
   } catch (error) {
     throw new Error("Error storing rates in database");
@@ -1152,32 +1156,26 @@ async function storeRatesInDatabase(
 
 export async function GET() {
   try {
-    const { goldRateUsd, goldRatePkr, silverRateUsd, silverRatePkr } =
+    const { goldRatePkr, goldRateUsd, goldRateSar, goldRateUae, goldRateInr } =
       await fetchRates();
-
-    console.log(
-      goldRateUsd,
-      goldRatePkr,
-      silverRateUsd,
-      silverRatePkr,
-      "Hit Route With CronJob and Get New Rates in Troy Ounce From API"
-    );
 
     const latestRates = await getLatestRatesFromDatabase();
 
     if (
       !latestRates ||
-      latestRates.gold_rate_usd !== goldRateUsd ||
       latestRates.gold_rate_pkr !== goldRatePkr ||
-      latestRates.silver_rate_usd !== silverRateUsd ||
-      latestRates.silver_rate_pkr !== silverRatePkr
+      latestRates.gold_rate_usd !== goldRateUsd ||
+      latestRates.gold_rate_sar !== goldRateSar ||
+      latestRates.gold_rate_uae !== goldRateUae ||
+      latestRates.gold_rate_inr !== goldRateInr
     ) {
       console.log("Rates fetched and updated in database successfully.");
       await storeRatesInDatabase(
-        goldRateUsd,
         goldRatePkr,
-        silverRateUsd,
-        silverRatePkr
+        goldRateUsd,
+        goldRateSar,
+        goldRateUae,
+        goldRateInr
       );
       return NextResponse.json(
         { message: "Rates fetched and updated in database successfully." },

@@ -99,10 +99,13 @@ export async function GET(request: Request) {
     await sql.query(`
       CREATE TABLE IF NOT EXISTS rates (
         id SERIAL PRIMARY KEY,
-        gold_rate_USD FLOAT NOT NULL,
         gold_rate_PKR FLOAT NOT NULL,
-        silver_rate_USD FLOAT NOT NULL,
-        silver_rate_PKR FLOAT NOT NULL,
+        gold_rate_USD FLOAT NOT NULL,
+        gold_rate_SAR FLOAT NOT NULL,
+        gold_rate_UAE FLOAT NOT NULL,
+        gold_rate_INR FLOAT NOT NULL,
+      
+       
         date TIMESTAMP NOT NULL
       );
     `);
