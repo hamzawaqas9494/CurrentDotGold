@@ -117,27 +117,27 @@ export const GoldRateProvider: React.FC<GoldRateProviderProps> = ({
     fetchRates();
   }, []);
   // take rate from another api
-  // const fetchLatestRateliveSecond = async () => {
-  //   try {
-  //     const response = await fetch("/api/new-live-rate");
-  //     const dataLive1 = await response.json();
-  //     setLive(dataLive1.spreadProfilePrices[0].bid);
-  //     // console.log(
-  //     //   dataLive1.spreadProfilePrices,
-  //     //   "dataLive1.spreadProfilePrices"
-  //     // );
-  //     // console.log(dataLive1.spreadProfilePrices[0].bid, "dataLive");
-  //   } catch (error) {
-  //     console.error("Failed to fetch latest rate.");
-  //   }
-  // };
+  const fetchLatestRateliveSecond = async () => {
+    try {
+      const response = await fetch("/api/new-live-rate");
+      const dataLive1 = await response.json();
+      setLive(dataLive1.spreadProfilePrices[0].bid);
+      // console.log(
+      //   dataLive1.spreadProfilePrices,
+      //   "dataLive1.spreadProfilePrices"
+      // );
+      // console.log(dataLive1.spreadProfilePrices[0].bid, "dataLive");
+    } catch (error) {
+      console.error("Failed to fetch latest rate.");
+    }
+  };
 
   // for live update rate that change imedatly
-  // useEffect(() => {
-  //   fetchLatestRateliveSecond();
-  //   const intervalId = setInterval(fetchLatestRateliveSecond, 1000);
-  //   return () => clearInterval(intervalId);
-  // }, []);
+  useEffect(() => {
+    fetchLatestRateliveSecond();
+    const intervalId = setInterval(fetchLatestRateliveSecond, 1000);
+    return () => clearInterval(intervalId);
+  }, []);
 
   return (
     <GoldRateContext.Provider
