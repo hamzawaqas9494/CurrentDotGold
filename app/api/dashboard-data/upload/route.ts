@@ -19,7 +19,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       request,
       onBeforeGenerateToken: async (pathname) => {
         return {
-          allowedContentTypes: ["image/jpeg", "image/png", "image/gif"],
+          allowedContentTypes: ["image/jpg", "image/png", "image/gif"],
           tokenPayload: JSON.stringify({
             token: blobToken, // Include the token in the payload
           }),

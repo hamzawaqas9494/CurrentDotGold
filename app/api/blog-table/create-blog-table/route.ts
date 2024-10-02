@@ -294,9 +294,6 @@ async function allBlogsTable() {
         title VARCHAR(255) NOT NULL,
         content TEXT NOT NULL,
         image TEXT,
-        image_name VARCHAR(255),
-        video TEXT,
-        video_name VARCHAR(255),
         visibility VARCHAR(50),
         published  VARCHAR(50),
         postedtime  VARCHAR(50)

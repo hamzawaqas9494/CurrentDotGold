@@ -516,6 +516,71 @@
 //     );
 //   }
 // }
+// import { NextRequest, NextResponse } from "next/server";
+// import { sql } from "@vercel/postgres";
+// import Date from "../../../components/Home/Date&Time";
+
+// export async function POST(request: NextRequest) {
+//   try {
+//     let date = Date();
+//     let currentdate = date.date;
+//     const formData = await request.formData();
+
+//     const title = formData.get("title") as string;
+//     const content = formData.get("content") as string;
+//     const visibility = formData.get("visibility") as string;
+//     const published = formData.get("published") as string;
+//     // const postedtime = formData.get("postedtime") as string;
+//     const imageFile = formData.get("image") as string;
+//     // const videoFile = formData.get("video") as File | null;
+//     console.log(imageFile, "hamza");
+//     // Validation for required fields
+//     if (!title || !content) {
+//       return NextResponse.json(
+//         { error: "Title and content are required" },
+//         { status: 400 }
+//       );
+//     }
+
+//     // let imageBase64 = null;
+//     // let imageName = null;
+//     // let videoBase64 = null;
+//     // let videoName = null;
+
+//     // // Convert image to Base64 and store its name
+//     // if (imageFile) {
+//     //   const imageBuffer = Buffer.from(await imageFile.arrayBuffer());
+//     //   imageBase64 = imageBuffer.toString("base64");
+//     //   imageName = imageFile.name; // Store the image's name
+//     // }
+
+//     // // Convert video to Base64 and store its name
+//     // if (videoFile) {
+//     //   const videoBuffer = Buffer.from(await videoFile.arrayBuffer());
+//     //   videoBase64 = videoBuffer.toString("base64");
+//     //   videoName = videoFile.name; // Store the video's name
+//     // }
+
+//     // Insert data into the `allblogs` table, including image and video names
+//     const result = await sql`
+//       INSERT INTO allblogs (title, content, image, visibility, published, postedtime)
+//       VALUES (${title}, ${content}, ${imageFile}, ${visibility}, ${published}, ${currentdate})
+//       RETURNING *;
+//     `;
+
+//     return NextResponse.json({
+//       message: "Blog post created successfully!",
+//       result: result.rows[0],
+//     });
+//   } catch (error) {
+//     console.error("Error during blog post creation:", error);
+//     return NextResponse.json(
+//       { error: "Internal server error" },
+//       { status: 500 }
+//     );
+//   }
+// }
+
 import { NextRequest, NextResponse } from "next/server";
 import { sql } from "@vercel/postgres";
 import Date from "../../../components/Home/Date&Time";
@@ -525,16 +590,11 @@ export async function POST(request: NextRequest) {
     let date = Date();
     let currentdate = date.date;
     const formData = await request.formData();
-
     const title = formData.get("title") as string;
     const content = formData.get("content") as string;
     const visibility = formData.get("visibility") as string;
     const published = formData.get("published") as string;
-    // const postedtime = formData.get("postedtime") as string;
     const imageFile = formData.get("image") as string;
-    // const videoFile = formData.get("video") as File | null;
-    console.log(imageFile, "hamza");
-    // Validation for required fields
     if (!title || !content) {
       return NextResponse.json(
         { error: "Title and content are required" },
@@ -542,26 +602,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // let imageBase64 = null;
-    // let imageName = null;
-    // let videoBase64 = null;
-    // let videoName = null;
-
-    // // Convert image to Base64 and store its name
-    // if (imageFile) {
-    //   const imageBuffer = Buffer.from(await imageFile.arrayBuffer());
-    //   imageBase64 = imageBuffer.toString("base64");
-    //   imageName = imageFile.name; // Store the image's name
-    // }
-
-    // // Convert video to Base64 and store its name
-    // if (videoFile) {
-    //   const videoBuffer = Buffer.from(await videoFile.arrayBuffer());
-    //   videoBase64 = videoBuffer.toString("base64");
-    //   videoName = videoFile.name; // Store the video's name
-    // }
-
-    // Insert data into the `allblogs` table, including image and video names
     const result = await sql`
       INSERT INTO allblogs (title, content, image, visibility, published, postedtime)
       VALUES (${title}, ${content}, ${imageFile}, ${visibility}, ${published}, ${currentdate})

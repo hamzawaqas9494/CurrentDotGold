@@ -1084,6 +1084,123 @@
 // //   }
 // // }
 
+// import { apiBaseUrl } from "@/context/constants";
+// import { sql } from "@vercel/postgres";
+// import { NextResponse } from "next/server";
+// export const dynamic = "force-dynamic";
+
+// async function fetchRates() {
+//   try {
+//     const response = await fetch(`${apiBaseUrl}`, {
+//       method: "GET",
+//       headers: {
+//         "Cache-Control": "no-cache",
+//         Pragma: "no-cache",
+//         Expires: "0",
+//       },
+//       cache: "no-store",
+//     });
+
+//     if (!response.ok) {
+//       throw new Error(`API Error: ${response.status} - ${response.statusText}`);
+//     }
+//     const data = await response.json();
+
+//     const goldRatePkr = parseFloat(data.metals.gold || "0");
+//     const dollar_In_Pkr = parseFloat(data.currencies.USD || "0");
+//     const Sar_In_Pkr = parseFloat(data.currencies.SAR || "0");
+//     const Uae_In_Pkr = parseFloat(data.currencies.AED || "0");
+//     const inr_In_pkr = parseFloat(data.currencies.INR || "0");
+//     // goldrate in different country
+//     const goldRateUsd = goldRatePkr / dollar_In_Pkr;
+//     const goldRateSar = goldRatePkr / Sar_In_Pkr;
+//     const goldRateUae = goldRatePkr / Uae_In_Pkr;
+//     const goldRateInr = goldRatePkr / inr_In_pkr;
+
+//     return { goldRatePkr, goldRateUsd, goldRateSar, goldRateUae, goldRateInr };
+//   } catch (error) {
+//     throw new Error("Error fetching rates");
+//   }
+// }
+
+// async function getLatestRatesFromDatabase() {
+//   try {
+//     const result =
+//       await sql`SELECT gold_rate_PKR,gold_rate_USD,gold_rate_SAR,gold_rate_UAE,gold_rate_INR FROM rates ORDER BY date DESC LIMIT 1;`;
+
+//     if (result.rows.length === 0) {
+//       return null;
+//     }
+//     return result.rows[0];
+//   } catch (error) {
+//     throw new Error("Error fetching latest rates from database");
+//   }
+// }
+
+// async function storeRatesInDatabase(
+//   goldRatePkr: number,
+//   goldRateUsd: number,
+//   goldRateSar: number,
+//   goldRateUae: number,
+//   goldRateInr: number
+// ) {
+//   try {
+//     await sql`
+//       INSERT INTO rates (gold_rate_PKR,gold_rate_USD,gold_rate_SAR,gold_rate_UAE,gold_rate_INR,date)
+//       VALUES (${goldRatePkr},${goldRateUsd},${goldRateSar},${goldRateUae},${goldRateInr},  NOW());
+//     `;
+//   } catch (error) {
+//     throw new Error("Error storing rates in database");
+//   }
+// }
+
+// export async function GET() {
+//   try {
+//     const { goldRatePkr, goldRateUsd, goldRateSar, goldRateUae, goldRateInr } =
+//       await fetchRates();
+
+//     const latestRates = await getLatestRatesFromDatabase();
+
+//     if (
+//       !latestRates ||
+//       latestRates.gold_rate_pkr !== goldRatePkr ||
+//       latestRates.gold_rate_usd !== goldRateUsd ||
+//       latestRates.gold_rate_sar !== goldRateSar ||
+//       latestRates.gold_rate_uae !== goldRateUae ||
+//       latestRates.gold_rate_inr !== goldRateInr
+//     ) {
+//       console.log("Rates fetched and updated in database successfully.");
+//       await storeRatesInDatabase(
+//         goldRatePkr,
+//         goldRateUsd,
+//         goldRateSar,
+//         goldRateUae,
+//         goldRateInr
+//       );
+//       return NextResponse.json(
+//         { message: "Rates fetched and updated in database successfully." },
+//         { status: 200 }
+//       );
+//     } else {
+//       console.log(
+//         "Rates fetched but no changes detected, No update to the database."
+//       );
+//       return NextResponse.json(
+//         {
+//           message:
+//             "Rates fetched but no changes detected, No update to the database.",
+//         },
+//         { status: 200 }
+//       );
+//     }
+//   } catch (error: any) {
+//     return NextResponse.json(
+//       { error: `Failed to process request: ${error.message}` },
+//       { status: 500 }
+//     );
+//   }
+// }
+
 import { apiBaseUrl } from "@/context/constants";
 import { sql } from "@vercel/postgres";
 import { NextResponse } from "next/server";
@@ -1105,13 +1222,14 @@ async function fetchRates() {
       throw new Error(`API Error: ${response.status} - ${response.statusText}`);
     }
     const data = await response.json();
-
+    console.log(data);
     const goldRatePkr = parseFloat(data.metals.gold || "0");
     const dollar_In_Pkr = parseFloat(data.currencies.USD || "0");
     const Sar_In_Pkr = parseFloat(data.currencies.SAR || "0");
     const Uae_In_Pkr = parseFloat(data.currencies.AED || "0");
     const inr_In_pkr = parseFloat(data.currencies.INR || "0");
-    // goldrate in different country
+
+    // gold rate in different currencies
     const goldRateUsd = goldRatePkr / dollar_In_Pkr;
     const goldRateSar = goldRatePkr / Sar_In_Pkr;
     const goldRateUae = goldRatePkr / Uae_In_Pkr;
@@ -1147,10 +1265,24 @@ async function storeRatesInDatabase(
   try {
     await sql`
       INSERT INTO rates (gold_rate_PKR,gold_rate_USD,gold_rate_SAR,gold_rate_UAE,gold_rate_INR,date)
-      VALUES (${goldRatePkr},${goldRateUsd},${goldRateSar},${goldRateUae},${goldRateInr},  NOW());
+      VALUES (${goldRatePkr},${goldRateUsd},${goldRateSar},${goldRateUae},${goldRateInr}, NOW());
     `;
   } catch (error) {
     throw new Error("Error storing rates in database");
+  }
+}
+
+async function deleteOldestRateIfLimitExceeded() {
+  try {
+    const result = await sql`SELECT COUNT(*) FROM rates;`;
+    const rowCount = parseInt(result.rows[0].count, 10);
+
+    if (rowCount > 100) {
+      await sql`DELETE FROM rates WHERE date = (SELECT MIN(date) FROM rates);`;
+      console.log("Oldest rate deleted to maintain the limit of 100 rows.");
+    }
+  } catch (error) {
+    throw new Error("Error deleting the oldest rate from database");
   }
 }
 
@@ -1177,6 +1309,10 @@ export async function GET() {
         goldRateUae,
         goldRateInr
       );
+
+      // Check if the number of rows exceeds 100 and delete the oldest if needed
+      await deleteOldestRateIfLimitExceeded();
+
       return NextResponse.json(
         { message: "Rates fetched and updated in database successfully." },
         { status: 200 }

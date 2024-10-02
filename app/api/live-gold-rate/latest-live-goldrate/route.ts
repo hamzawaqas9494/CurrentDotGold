@@ -42,6 +42,7 @@ export async function GET(req: NextRequest) {
 
     // Destructure the last 2 rows, assigning default values in case there are fewer than 2 rows
     const [latestRate, secondLatestRate] = rows;
+    console.log(latestRate, "latestRate");
 
     return NextResponse.json(
       {

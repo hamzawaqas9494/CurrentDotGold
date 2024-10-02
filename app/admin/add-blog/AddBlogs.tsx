@@ -588,26 +588,13 @@
 // export default AddBlogs;
 
 "use client";
-
 import React, { FC, useState, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import MainLayout from "@/app/admin/components/Admin/MainLayout";
 import { Card, CardBody, CardHeader } from "@/app/ui/Card";
 import { EditIcon } from "@/icons";
 import Editor from "./Editor";
-import { type PutBlobResult } from "@vercel/blob";
 import { upload } from "@vercel/blob/client";
-
-interface Blog {
-  id: number;
-  title: string;
-  content: string;
-  image: string;
-  Visibility: number;
-  Published: number;
-  length: number;
-  currentDateTime: any;
-}
 
 const AddBlogs: FC = () => {
   const searchParams = useSearchParams();
@@ -615,37 +602,33 @@ const AddBlogs: FC = () => {
   const [blog, setBlog] = useState<any>({ id });
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
-  const [selectedFile, setSelectedFile] = useState<File | null>(null); // Store selected image
-  const [imageBlob, setImageBlob] = useState<PutBlobResult | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const inputImageRef = useRef<HTMLInputElement>(null);
 
   const handlePublish = async () => {
     try {
       if (selectedFile) {
-        // Upload the image only on publish
         const newBlob = await upload(selectedFile.name, selectedFile, {
           access: "public",
           handleUploadUrl: "../api/dashboard-data/upload",
         });
-        const url: any = newBlob.url;
-        console.log(url, "url");
-        setImageBlob(url);
-      }
-      console.log(imageBlob, "imageBlob");
-      const formData = new FormData();
-      formData.append("title", title);
-      formData.append("content", content);
-      if (imageBlob) formData.append("image", imageBlob.url);
+        const formData = new FormData();
+        formData.append("title", title);
+        formData.append("content", content);
+        formData.append("image", newBlob.url);
+        formData.append("visibility", "1");
+        formData.append("published", "1");
 
-      const response = await fetch("/api/blog-table/sent-blog-data", {
-        method: "POST",
-        body: formData,
-      });
+        const response = await fetch("/api/blog-table/sent-blog-data", {
+          method: "POST",
+          body: formData,
+        });
 
-      if (response.ok) {
-        console.log("Blog post created successfully!");
-      } else {
-        console.error("Failed to create a blog post.");
+        if (response.ok) {
+          console.log("Blog post created successfully!");
+        } else {
+          console.error("Failed to create a blog post.");
+        }
       }
     } catch (error) {
       console.error("An error occurred:", error);
@@ -659,7 +642,6 @@ const AddBlogs: FC = () => {
   };
 
   const handleFileSelect = (file: File) => {
-    // Just store the selected file without uploading it
     setSelectedFile(file);
   };
 

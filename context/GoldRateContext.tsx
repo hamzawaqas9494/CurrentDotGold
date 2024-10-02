@@ -14,8 +14,10 @@ const GoldRateContext = createContext<{
   yesterdayRate: number;
   isLoading: boolean;
   error: string | null;
+  currencyLive: number;
 }>({
   live: 0,
+  currencyLive: 0,
   todayRateusd: 0,
   todayRatepkr: 0,
   todayRateInr: 0,
@@ -43,6 +45,7 @@ export const GoldRateProvider: React.FC<GoldRateProviderProps> = ({
   const [todayRateAed, setTodayRateAed] = useState<number>(0);
   const [todayRateInr, setTodayRateInr] = useState<number>(0);
   const [live, setLive] = useState<number>(0);
+  const [currencyLive, setCurrencyLive] = useState<number>(0);
   // for live rate imedately update
   const [todayRatepkrLive, setTodayRatepkrLive] = useState<number>(0);
   const [todayRateusdLive, setTodayRateusdLive] = useState<number>(0);
@@ -97,28 +100,44 @@ export const GoldRateProvider: React.FC<GoldRateProviderProps> = ({
     const intervalId = setInterval(fetchLatestRatelive, 1000);
     return () => clearInterval(intervalId);
   }, []);
+  useEffect(() => {
+    const fetchRates = async () => {
+      try {
+        const response = await fetch(
+          "https://openexchangerates.org/api/latest.json?app_id=1bf504ba44da4e1eb440ca08143eda50"
+        );
+        const dataLive = await response.json();
+        if (response.ok) {
+          setCurrencyLive(dataLive.rates);
+          throw new Error(`Error: ${response.status}`);
+        }
+      } catch (err) {}
+    };
+
+    fetchRates();
+  }, []);
   // take rate from another api
-  const fetchLatestRateliveSecond = async () => {
-    try {
-      const response = await fetch("/api/new-live-rate");
-      const dataLive1 = await response.json();
-      setLive(dataLive1.spreadProfilePrices[0].bid);
-      // console.log(
-      //   dataLive1.spreadProfilePrices,
-      //   "dataLive1.spreadProfilePrices"
-      // );
-      // console.log(dataLive1.spreadProfilePrices[0].bid, "dataLive");
-    } catch (error) {
-      console.error("Failed to fetch latest rate.");
-    }
-  };
+  // const fetchLatestRateliveSecond = async () => {
+  //   try {
+  //     const response = await fetch("/api/new-live-rate");
+  //     const dataLive1 = await response.json();
+  //     setLive(dataLive1.spreadProfilePrices[0].bid);
+  //     // console.log(
+  //     //   dataLive1.spreadProfilePrices,
+  //     //   "dataLive1.spreadProfilePrices"
+  //     // );
+  //     // console.log(dataLive1.spreadProfilePrices[0].bid, "dataLive");
+  //   } catch (error) {
+  //     console.error("Failed to fetch latest rate.");
+  //   }
+  // };
 
   // for live update rate that change imedatly
-  useEffect(() => {
-    fetchLatestRateliveSecond();
-    const intervalId = setInterval(fetchLatestRateliveSecond, 1000);
-    return () => clearInterval(intervalId);
-  }, []);
+  // useEffect(() => {
+  //   fetchLatestRateliveSecond();
+  //   const intervalId = setInterval(fetchLatestRateliveSecond, 1000);
+  //   return () => clearInterval(intervalId);
+  // }, []);
 
   return (
     <GoldRateContext.Provider
@@ -131,7 +150,7 @@ export const GoldRateProvider: React.FC<GoldRateProviderProps> = ({
         todayRateInr,
         todayRateusdLive,
         todayRatepkrLive,
-
+        currencyLive,
         yesterdayRate,
         isLoading,
         error,
