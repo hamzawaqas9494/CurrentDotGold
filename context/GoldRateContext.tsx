@@ -100,6 +100,7 @@ export const GoldRateProvider: React.FC<GoldRateProviderProps> = ({
     const intervalId = setInterval(fetchLatestRatelive, 1000);
     return () => clearInterval(intervalId);
   }, []);
+  // currences rate
   useEffect(() => {
     const fetchRates = async () => {
       try {

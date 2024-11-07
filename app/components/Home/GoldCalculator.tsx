@@ -2131,6 +2131,7 @@ const GoldCalculator: FC = () => {
     INR: "India",
     PKR: "Pakistan",
     SAR: "Saudi Arabia",
+    KRW: "Korea",
   };
 
   const countries1: Record<string, { rate: number; currency: string }> = {};

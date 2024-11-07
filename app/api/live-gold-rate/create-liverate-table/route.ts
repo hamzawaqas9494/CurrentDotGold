@@ -104,8 +104,6 @@ export async function GET(request: Request) {
         gold_rate_SAR FLOAT NOT NULL,
         gold_rate_UAE FLOAT NOT NULL,
         gold_rate_INR FLOAT NOT NULL,
-      
-       
         date TIMESTAMP NOT NULL
       );
     `);
