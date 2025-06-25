@@ -2118,6 +2118,8 @@ import formatDate from "@/helpers/dateFormatter";
 const GoldCalculator: FC = () => {
   const { isLoading, error, live, currencyLive } = useGoldRate();
 
+  console.log(currencyLive,"currencyLive");
+
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [weight, setWeight] = useState<number>(1); // Default value set to 1
   const [units, setUnits] = useState<Units>(Units.Grams);
@@ -2126,12 +2128,12 @@ const GoldCalculator: FC = () => {
   const [priceLocked, setPriceLocked] = useState<boolean>(false); // New state to lock the price
 
   const countryMap: Record<string, string> = {
-    USD: "USA",
-    AED: "United Arab Emirates",
-    INR: "India",
-    PKR: "Pakistan",
-    SAR: "Saudi Arabia",
-    KRW: "Korea",
+    usd: "USA",
+    aed: "United Arab Emirates",
+    inr: "India",
+    pkr: "Pakistan",
+    sar: "Saudi Arabia",
+    krw: "Korea",
   };
 
   const countries1: Record<string, { rate: number; currency: string }> = {};
@@ -2148,7 +2150,7 @@ const GoldCalculator: FC = () => {
     rate: live,
     currency: "USD",
   };
-  console.log(todayRate, "todayRate");
+  // console.log(todayRate, "todayRate");
   const goldRatesByCountry = useMemo(() => {
     if (!todayRate) return [];
 
