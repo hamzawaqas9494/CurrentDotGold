@@ -1,19 +1,11 @@
 import { NextResponse } from "next/server";
-import {apiBaseUrlGold, apiBaseUrlSliver,apiBaseUrlCurrency} from "../../../context/constants"
-
 export const dynamic = "force-dynamic";
+import { apiBaseUrlGold, apiBaseUrlSliver, apiBaseUrlCurrency } from "../../../context/constants";
 
-// ✅ Env variables with type-safe checks
 const GOLD_API = apiBaseUrlGold as string;
 const SILVER_API = apiBaseUrlSliver as string;
 const CURRENCY_API = apiBaseUrlCurrency as string;
 
-
-// if (!GOLD_API || !SILVER_API || !CURRENCY_API) {
-//   throw new Error("Missing one or more API URLs in environment variables.");
-// }
-
-// ✅ Type definitions
 type SpreadProfilePrice = {
   spreadProfile: string;
   bidSpread: number;
@@ -33,7 +25,6 @@ type CurrencyApiResponse = {
   usd: Record<string, number>;
 };
 
-// ✅ Fetch functions
 async function fetchMetal(url: string, type: "gold" | "silver") {
   try {
     const res = await fetch(url, {
@@ -70,7 +61,6 @@ async function fetchCurrency() {
   }
 }
 
-// ✅ Main handler
 export async function GET() {
   const [gold, silver, currency] = await Promise.all([
     fetchMetal(GOLD_API, "gold"),
@@ -82,15 +72,33 @@ export async function GET() {
     (item): item is NonNullable<typeof item> => item !== null
   );
 
-  if (result.length === 0) {
-    return NextResponse.json(
-      { error: "All API requests failed" },
-      { status: 500 }
-    );
-  }
+  const responseBody = result.length === 0
+    ? { error: "All API requests failed" }
+    : { message: "Data fetched successfully", data: result };
 
-  return NextResponse.json({
-    message: "Data fetched successfully",
-    data: result,
+  const statusCode = result.length === 0 ? 500 : 200;
+
+  return NextResponse.json(responseBody, {
+    status: statusCode,
+    headers: {
+      "Access-Control-Allow-Origin": "*",  // Allow all origins; you can restrict this if needed
+      "Access-Control-Allow-Methods": "GET, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type",
+    },
   });
+}
+
+// OPTIONAL: Handle OPTIONS preflight requests
+export function OPTIONS() {
+  return NextResponse.json(
+    {},
+    {
+      status: 204,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+      },
+    }
+  );
 }
