@@ -1,16 +1,17 @@
 import { NextResponse } from "next/server";
+import {apiBaseUrlGold, apiBaseUrlSliver,apiBaseUrlCurrency} from "../../../context/constants"
 
 export const dynamic = "force-dynamic";
 
 // ✅ Env variables with type-safe checks
-const GOLD_API = process.env.NEXT_PUBLIC_GOLD_API as string;
-const SILVER_API = process.env.NEXT_PUBLIC_SILVER_API as string;
-const CURRENCY_API = process.env.NEXT_PUBLIC_CURRENCY_API as string;
+const GOLD_API = apiBaseUrlGold as string;
+const SILVER_API = apiBaseUrlSliver as string;
+const CURRENCY_API = apiBaseUrlCurrency as string;
 
 
-if (!GOLD_API || !SILVER_API || !CURRENCY_API) {
-  throw new Error("Missing one or more API URLs in environment variables.");
-}
+// if (!GOLD_API || !SILVER_API || !CURRENCY_API) {
+//   throw new Error("Missing one or more API URLs in environment variables.");
+// }
 
 // ✅ Type definitions
 type SpreadProfilePrice = {
