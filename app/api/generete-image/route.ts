@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
 
     ctx.fillText('Gold Rates', width / 2, 100);
 
-    ctx.font = '32px Arial';
+   ctx.font = 'bold 12px sans-serif';
     goldRates.forEach((rate: any, index: number) => {
       const y = 180 + index * 60;
       const text = `${rate.units} ${rate.purity}K | ${rate.rateUSD.toFixed(2)} USD | ${rate.ratePKR.toFixed(2)} PKR`;
