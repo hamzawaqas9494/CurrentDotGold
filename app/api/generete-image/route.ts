@@ -20,24 +20,22 @@ export async function POST(req: NextRequest) {
     const bgImage = await loadImage(imageBuffer);
     ctx.drawImage(bgImage, 0, 0, width, height);
 
-    // ✅ Text styling
+    // ✅ Text styling (default safe fonts)
     ctx.fillStyle = 'white';
-    ctx.font = 'bold 42px Arial';
+    ctx.font = 'bold 42px sans-serif'; // 👈 Default system font
     ctx.textAlign = 'center';
 
     // ✅ Header
     ctx.fillText('Gold Rates', width / 2, 100);
 
-    // ✅ Rate rows
-    ctx.font = '32px Arial';
+    // ✅ Rates
+    ctx.font = '32px sans-serif'; // 👈 Again using system font
     goldRates.forEach((rate: any, index: number) => {
       const y = 180 + index * 60;
-
       const text = `${rate.units} ${rate.purity}K | ${rate.rateUSD.toFixed(2)} USD | ${rate.ratePKR.toFixed(2)} PKR`;
       ctx.fillText(text, width / 2, y);
     });
 
-    // ✅ Convert to buffer
     const buffer = canvas.toBuffer('image/png');
 
     return new NextResponse(buffer, {
