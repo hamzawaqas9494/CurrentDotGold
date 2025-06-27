@@ -84,7 +84,6 @@ export const GoldRateProvider: React.FC<GoldRateProviderProps> = ({ children }) 
       // CURRENCY data
       const currencyData = data.data.find((item: any) => item.type === "currency");
       if (currencyData && currencyData.rates) {
-        console.log(currencyData.rates, "currencyData.rates");
         setCurrencyLive(currencyData.rates);
         setCurrencyLiveUsd(currencyData.rates.usd || 1);
         setCurrencyLivePkr(currencyData.rates.pkr || 0);
