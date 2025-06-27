@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
 
     // ✅ Text styling
     ctx.fillStyle = 'white';
-    ctx.font = 'bold 42px Arial';
+   ctx.font = 'bold 12px sans-serif';
     ctx.textAlign = 'center';
 
     ctx.fillText('Gold Rates', width / 2, 100);
