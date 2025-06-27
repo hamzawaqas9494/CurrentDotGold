@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
     const { goldRates } = await req.json();
 
     // ✅ Register custom font (Poppins)
-    registerFont(path.join(process.cwd(), 'public/fonts/Poppins-Regular.ttf'), {
+    registerFont(path.join(process.cwd(), '/public/fonts/Poppins-Regular.ttf'), {
       family: 'Poppins',
     });
 
