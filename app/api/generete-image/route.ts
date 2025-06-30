@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
     const ctx = canvas.getContext('2d');
 
     // ✅ Load background image from live domain
-    const imageURL = 'https://goldhub.up.railway.app/assets/hero.png';
+    const imageURL = 'https://goldhub.up.railway.app/assets/socialmediabanner.png';
     const response = await fetch(imageURL);
     const arrayBuffer = await response.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
