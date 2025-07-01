@@ -168,7 +168,7 @@ export default function GoldSilverImageGenerator() {
                 </div>
               )}
 
-              <div className="flex flex-col items-end justify-center mt-6 space-y-4">
+              <div className="flex flex-col items-center justify-center mt-6 space-y-4">
                 <button
                   onClick={generateImage}
                   className="flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 text-white px-5 py-2 rounded shadow-md transition duration-300"
@@ -182,7 +182,7 @@ export default function GoldSilverImageGenerator() {
                     <img
                       src={imgSrc}
                       alt="Generated Rate"
-                      className="w-full  rounded shadow-lg"
+                      className="rounded shadow-lg"
                     />
                     <a
                       href={imgSrc}
