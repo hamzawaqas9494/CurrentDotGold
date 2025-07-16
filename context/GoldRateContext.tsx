@@ -67,19 +67,19 @@ export const GoldRateProvider: React.FC<GoldRateProviderProps> = ({ children }) 
       const goldData = data.data.find((item: any) => item.type === "gold");
       if (!goldData) throw new Error("Gold data missing");
 
-      const goldStandard = goldData.prices.find((p: SpreadPrice) => p.spreadProfile === "standard");
-      if (!goldStandard) throw new Error("Gold standard spread not found");
+      const goldprime = goldData.prices.find((p: SpreadPrice) => p.spreadProfile === "prime");
+      if (!goldprime) throw new Error("Gold prime spread not found");
 
-      setLive(goldStandard.bid);
+      setLive(goldprime.bid);
 
       // SILVER data
       const silverData = data.data.find((item: any) => item.type === "silver");
       if (!silverData) throw new Error("Silver data missing");
 
-      const silverStandard = silverData.prices.find((p: SpreadPrice) => p.spreadProfile === "standard");
-      if (!silverStandard) throw new Error("Silver standard spread not found");
+      const silverprime = silverData.prices.find((p: SpreadPrice) => p.spreadProfile === "prime");
+      if (!silverprime) throw new Error("Silver prime spread not found");
 
-      setSilverLive(silverStandard.bid);
+      setSilverLive(silverprime.bid);
 
       // CURRENCY data
       const currencyData = data.data.find((item: any) => item.type === "currency");
