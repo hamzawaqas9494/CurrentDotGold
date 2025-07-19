@@ -58,7 +58,7 @@ export const GoldRateProvider: React.FC<GoldRateProviderProps> = ({ children }) 
   const [error, setError] = useState<string | null>(null);
 
   const fetchGoldRate = async () => {
-    try {
+    try { 
       const res = await fetch("/api/gold-silver-currency");
       const data = await res.json();
       if (!res.ok) throw new Error(`API failed: ${res.status}`);
