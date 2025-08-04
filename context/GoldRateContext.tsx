@@ -101,7 +101,7 @@ export const GoldRateProvider: React.FC<GoldRateProviderProps> = ({ children }) 
 
   useEffect(() => {
     fetchGoldRate();
-    const interval = setInterval(fetchGoldRate, 1000);
+    const interval = setInterval(fetchGoldRate, 10000);
     return () => clearInterval(interval);
   }, []);
 

@@ -192,7 +192,7 @@ export async function GET() {
   const now = Date.now();
 
   // ✅ Return cached data if within 1 second
-  if (cachedResponse && now - lastFetchTime < 1000) {
+  if (cachedResponse && now - lastFetchTime < 10000) {
     return NextResponse.json(cachedResponse.body, {
       status: cachedResponse.status,
       headers: cachedResponse.headers,
