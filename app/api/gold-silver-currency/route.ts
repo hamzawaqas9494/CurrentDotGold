@@ -205,7 +205,6 @@ export async function GET() {
     fetchMetal(SILVER_API, "silver"),
     fetchCurrency(),
   ]);
-
   const result = [gold, silver, currency].filter(
     (item): item is NonNullable<typeof item> => item !== null
   );
