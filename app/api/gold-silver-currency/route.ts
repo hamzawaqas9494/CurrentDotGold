@@ -160,7 +160,7 @@ async function fetchMetal(url: string, type: "gold" | "silver") {
     const item = data[0];
     return {
       type,
-      platform: item.topo.platform,
+      // platform: item.topo.platform,
       server: item.topo.server,
       ts: item.ts,
       prices: item.spreadProfilePrices,
